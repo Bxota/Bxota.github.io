@@ -1,47 +1,109 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <transition name="fade" tag="div" class="wrapper" mode="out-in">
+    <div class="wrapper" v-if="isLoaded" id="app">
+      <LandingPage :user="user" />
+      <Description :user="user" :content="description" :links="links" />
+      <Experience :content="experiences" />
+      <Skills :content="skills" />
+      <Projects :content="projects" />
+      <Footer :user="user" :links="links" />
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </transition>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<script>
+import LandingPage from "./components/LandingPage.vue";
+import Description from "./components/Description.vue";
+import Experience from "./components/Experience.vue";
+import Skills from "./components/Skills.vue";
+import Projects from "./components/Projects.vue";
+import Footer from "./components/Footer.vue";
+
+import { cosmic } from "./cosmic.js";
+
+export default {
+  name: "App",
+  components: {
+    LandingPage,
+    Description,
+    Experience,
+    Skills,
+    Projects,
+    Footer,
+  },
+  data: () => ({
+    isLoaded: false,
+    user: {},
+    description: {},
+    links: {},
+    experiences: {},
+    skills: {},
+    projects: {},
+  }),
+  methods: {
+    async fetchObject(slug) {
+      return await cosmic.objects.findOne({
+        type: slug,
+        slug: slug
+      }).props("slug,title,metadata")
+      .depth(1)
+    },
+    extractFirstObject(objects) {
+      if(objects.objects == null)
+        return void 0;
+      else
+        return objects.objects[0];
+    }
+  },
+  created() {
+    document.body.classList.add("loading");
+    Promise.all([
+      this.fetchObject('user-data'),
+      this.fetchObject('description'),
+      this.fetchObject('links'),
+      this.fetchObject('experiences'),
+      this.fetchObject('skills'),
+      this.fetchObject('projects')
+    ]).then(([
+      user_data,
+      description,
+      links,
+      experiences,
+      skills,
+      projects
+    ]) => {
+      this.user = {
+        name: user_data.object.metadata.name,
+        status: user_data.object.metadata.status,
+        email: user_data.object.metadata.email,
+        phone: user_data.object.metadata.phone,
+        city: user_data.object.metadata.city,
+        lang: user_data.object.metadata.lang,
+        photo: user_data.object.metadata.photo,
+      }
+      this.description = description
+      this.links = links
+      this.experiences = experiences
+      this.skills = skills
+      this.projects = projects
+      this.isLoaded = true;
+      this.$nextTick(() => document.body.classList.remove("loading"));
+    });
+  },
+};
+</script>
+
+<style scoped lang="scss">
+@import "@/styles/constants.scss";
+
+#app {
+  font-family: Montserrat-Regular, serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.wrapper {
+  height: 100%;
 }
 </style>
