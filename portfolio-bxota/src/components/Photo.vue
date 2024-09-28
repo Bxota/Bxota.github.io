@@ -15,9 +15,9 @@ export default {
   methods: {
     getImgUrl(img) {
       if (img == undefined || img == "") return "";
-      else if (/^https:\/\/cdn\.cosmicjs\.com\/.+\.(jpg|png|gif)$/.test(img))
-        return img;
-      return require("../assets/img/projects/" + img);
+      else if (/^https:\/\/cdn\.cosmicjs\.com\/.+\.(jpg|png|gif|jpeg)$/.test(img))
+       return img;
+      return require("../assets/img/" + img);
     },
   },
 };

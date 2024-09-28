@@ -3,36 +3,42 @@
     <div class="wrapper" v-if="isLoaded" id="app">
       <div>
       </div>
-      <LandingPage :user="user" :selectedLang="selectedLang" />
-      <Description :user="user" :content="description" :links="links" :selectedLang="selectedLang" />
+      <div>
+        <p>coucou</p>
+        <button @click="setLang('fr')">
+          <img id="imgLogo" class="img-responsive mx-auto d-block" :src="getImgUrl('french-flag.png')" :alt="post.title"/>
+        </button>
+      </div>
       <button @click="toggleLang">Switch Language</button> <!-- Bouton pour changer la langue -->
-      <Experience :content="experiences" :selectedLang="selectedLang" />
-      <Skills :content="skills" :selectedLang="selectedLang" />
-      <Projects :content="projects" :selectedLang="selectedLang" />
-      <Footer :user="user" :links="links" />
+      <!-- <LandingPage :user="user" :selectedLang="selectedLang" /> -->
+      <!-- <Description :user="user" :content="description" :links="links" :selectedLang="selectedLang" /> -->
+      <!-- <Experience :content="experiences" :selectedLang="selectedLang" /> -->
+      <!-- <Skills :content="skills" :selectedLang="selectedLang" /> -->
+      <!-- <Projects :content="projects" :selectedLang="selectedLang" /> -->
+      <!-- <Footer :user="user" :links="links" /> -->
     </div>
   </transition>
 </template>
 
 <script>
-import LandingPage from "./components/LandingPage.vue";
-import Description from "./components/Description.vue";
-import Experience from "./components/Experience.vue";
-import Skills from "./components/Skills.vue";
-import Projects from "./components/Projects.vue";
-import Footer from "./components/Footer.vue";
+//import LandingPage from "./components/LandingPage.vue";
+//import Description from "./components/Description.vue";
+//import Experience from "./components/Experience.vue";
+//import Skills from "./components/Skills.vue";
+//import Projects from "./components/Projects.vue";
+//import Footer from "./components/Footer.vue";
 
 import { cosmic } from "./cosmic.js";
 
 export default {
   name: "App",
   components: {
-    LandingPage,
-    Description,
-    Experience,
-    Skills,
-    Projects,
-    Footer,
+    //LandingPage,
+    //Description,
+    //Experience,
+    //Skills,
+    //Projects,
+    //Footer,
   },
   data: () => ({
     isLoaded: false,
@@ -54,6 +60,12 @@ export default {
     },
     toggleLang() { // Méthode pour changer la langue
       this.selectedLang = this.selectedLang === "en" ? "fr" : "en";
+    },
+    setLang(lang) {
+      this.selectedLang = lang;
+    },
+    getImgUrl(img) {
+        return require('../assets/img/logo/'+img);
     },
     extractFirstObject(objects) {
       if(objects.objects == null)
