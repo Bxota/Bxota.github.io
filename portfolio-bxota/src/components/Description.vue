@@ -1,7 +1,7 @@
 <template>
     <section id="about">
         <AnimateOnVisible name="fadeDown" :duration="1">
-            <Title :title="content.object.metadata.title" :description="content.object.metadata.description" />
+            <Title :title="content.object.metadata.title[selectedLang]" :description="content.object.metadata.description[selectedLang]" />
         </AnimateOnVisible>
 
         <AnimateOnVisible name="fadeRight" :duration="1">
@@ -12,10 +12,10 @@
                     </div>
                     <div class="row">
                         <div class="col-md-7 mr-auto card-mobile">
-                            <Presentation :content="content"/>
+                            <Presentation :content="content" :selectedLang="selectedLang"/>
                         </div>
                         <div class="col-md-4 card-mobile">
-                            <PersonnalCard :user="user" :links="links"/>
+                            <PersonnalCard :user="user" :links="links" :selectedLang="selectedLang"/>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
 
     export default {
         name: 'AboutMe',
-        props: ['user', 'content', 'links'],
+        props: ['user', 'content', 'links', 'selectedLang'],
         components: {
             Title,
             PersonnalCard,

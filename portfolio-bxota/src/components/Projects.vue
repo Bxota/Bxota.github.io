@@ -3,15 +3,15 @@
     <AnimateOnVisible name="fadeDown" :duration="1">
 		<Title
 		class="title"
-		:title="content.object.metadata.title"
-		:description="content.object.metadata.description"
+		:title="content.object.metadata.title[selectedLang]"
+		:description="content.object.metadata.description[selectedLang]"
 		/>
     </AnimateOnVisible>
 
     <div class="container-fluid center-block">
       <article class="content text-center">
 
-		<AnimateOnVisible class="timeline mx-auto" v-for="(post, index) in content.object.metadata.items" :key="index" name="fadeLeft" :duration="0.5">
+		<AnimateOnVisible class="timeline mx-auto" v-for="(post, index) in content.object.metadata.items[selectedLang]" :key="index" name="fadeLeft" :duration="0.5">
 			<vue-timeline-update
         :date="new Date(post.date)"
         :title="post.title"
@@ -32,7 +32,7 @@ import Title from "./Title.vue";
 
 export default {
   name: "Projects",
-  props: ['content'],
+  props: ['content', 'selectedLang'],
   components: {
     Title
   },

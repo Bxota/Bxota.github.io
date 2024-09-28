@@ -1,7 +1,7 @@
 <template>
     <section id="skills">
         <AnimateOnVisible name="fadeDown" :duration="1">
-            <Title :title="content.object.metadata.title" :description="content.object.metadata.description" />
+            <Title :title="content.object.metadata.title[selectedLang]" />
         </AnimateOnVisible>
 
         <div class="section-content">
@@ -27,7 +27,7 @@
         components: {
             Title,
         },
-        props: ['content'],
+        props: ['content', "selectedLang"],
         methods: {
             getImgUrl(img) {
                 return require('../assets/img/logo/'+img);

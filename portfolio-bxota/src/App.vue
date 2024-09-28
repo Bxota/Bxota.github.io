@@ -1,11 +1,14 @@
 <template>
   <transition name="fade" tag="div" class="wrapper" mode="out-in">
     <div class="wrapper" v-if="isLoaded" id="app">
-      <LandingPage :user="user" />
-      <Description :user="user" :content="description" :links="links" />
-      <Experience :content="experiences" />
-      <Skills :content="skills" />
-      <Projects :content="projects" />
+      <div>
+      </div>
+      <LandingPage :user="user" :selectedLang="selectedLang" />
+      <Description :user="user" :content="description" :links="links" :selectedLang="selectedLang" />
+      <button @click="toggleLang">Switch Language</button> <!-- Bouton pour changer la langue -->
+      <Experience :content="experiences" :selectedLang="selectedLang" />
+      <Skills :content="skills" :selectedLang="selectedLang" />
+      <Projects :content="projects" :selectedLang="selectedLang" />
       <Footer :user="user" :links="links" />
     </div>
   </transition>
@@ -39,6 +42,7 @@ export default {
     experiences: {},
     skills: {},
     projects: {},
+    selectedLang: 'en'
   }),
   methods: {
     async fetchObject(slug) {
@@ -47,6 +51,9 @@ export default {
         slug: slug
       }).props("slug,title,metadata")
       .depth(1)
+    },
+    toggleLang() { // Méthode pour changer la langue
+      this.selectedLang = this.selectedLang === "en" ? "fr" : "en";
     },
     extractFirstObject(objects) {
       if(objects.objects == null)
@@ -58,37 +65,41 @@ export default {
   created() {
     document.body.classList.add("loading");
     Promise.all([
-      this.fetchObject('user-data'),
-      this.fetchObject('description'),
-      this.fetchObject('links'),
-      this.fetchObject('experiences'),
-      this.fetchObject('skills'),
-      this.fetchObject('projects')
-    ]).then(([
-      user_data,
-      description,
-      links,
-      experiences,
-      skills,
-      projects
-    ]) => {
-      this.user = {
-        name: user_data.object.metadata.name,
-        status: user_data.object.metadata.status,
-        email: user_data.object.metadata.email,
-        phone: user_data.object.metadata.phone,
-        city: user_data.object.metadata.city,
-        lang: user_data.object.metadata.lang,
-        photo: user_data.object.metadata.photo,
+      this.fetchObject("user-data"),
+      this.fetchObject("description"),
+      this.fetchObject("links"),
+      this.fetchObject("experiences"),
+      this.fetchObject("skills"),
+      this.fetchObject("projects"),
+    ]).then(
+      ([
+        user_data,
+        description,
+        links,
+        experiences,
+        skills,
+        projects,
+      ]) => {
+        this.user = {
+          name: user_data.object.metadata.name,
+          status: user_data.object.metadata.status,
+          email: user_data.object.metadata.email,
+          phone: user_data.object.metadata.phone,
+          city: user_data.object.metadata.city,
+          lang: user_data.object.metadata.lang,
+          photo: user_data.object.metadata.photo,
+        };
+        this.description = description;
+        this.links = links;
+        this.experiences = experiences;
+        this.skills = skills;
+        this.projects = projects;
+        this.isLoaded = true;
+        this.$nextTick(() =>
+          document.body.classList.remove("loading")
+        );
       }
-      this.description = description
-      this.links = links
-      this.experiences = experiences
-      this.skills = skills
-      this.projects = projects
-      this.isLoaded = true;
-      this.$nextTick(() => document.body.classList.remove("loading"));
-    });
+    );
   },
 };
 </script>

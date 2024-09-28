@@ -7,7 +7,7 @@
         </AnimateOnVisible>
         <hr />
         <AnimateOnVisible name="fadeUp" ::duration="1">
-          <p>{{ user.status }}</p>
+          <p>{{ user.status[selectedLang] }}</p>
         </AnimateOnVisible>
       </div>
     </div>
@@ -17,7 +17,7 @@
 <script>
 export default {
   name: "LandingPage",
-  props: ["user"]
+  props: ["user", "selectedLang"]
 };
 </script>
 

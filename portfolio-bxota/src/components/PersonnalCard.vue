@@ -3,8 +3,7 @@
     <h3>{{ user.name }}</h3>
     <div class="data"><strong>E-mail:</strong> {{ user.email }}</div>
     <div class="data"><strong>Phone:</strong> {{ user.phone }}</div>
-    <div class="data"><strong>City:</strong> {{ user.city }}</div>
-    <div class="data"><strong>Languages:</strong> {{ user.lang }}</div>
+    <div class="data"><strong>Languages:</strong> {{ user.lang[selectedLang] }}</div>
     <SocialBar :links="links"/>
   </div>
 </template>
@@ -14,7 +13,7 @@ import SocialBar from './SocialBar.vue'
 
 export default {
     name: 'PersonnalCard',
-    props: ['user', 'links'],
+    props: ['user', 'links', 'selectedLang'],
     components: {
         SocialBar,
     }

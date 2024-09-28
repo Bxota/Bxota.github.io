@@ -2,16 +2,6 @@
   <div class="social-wrap">
     <ul>
       <li>
-        <a :href="links.object.metadata.facebook" target="_blank">
-          <font-awesome-icon class="icon" :icon="['fab', 'facebook-square']" />
-        </a>
-      </li>
-      <li>
-        <a :href="links.object.metadata.instagram" target="_blank">
-          <font-awesome-icon class="icon" :icon="['fab', 'instagram-square']" />
-        </a>
-      </li>
-      <li>
         <a :href="links.object.metadata.linkedin" target="_blank">
           <font-awesome-icon class="icon" :icon="['fab', 'linkedin']" />
         </a>

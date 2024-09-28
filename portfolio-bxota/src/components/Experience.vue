@@ -3,8 +3,8 @@
     <AnimateOnVisible name="fadeDown" :duration="1">
       <Title
         class="title"
-        :title="content.object.metadata.title"
-        :description="content.object.metadata.description"
+        :title="content.object.metadata.title[selectedLang]"
+        :description="content.object.metadata.description[selectedLang]"
       />
     </AnimateOnVisible>
 
@@ -13,11 +13,13 @@
 			<div class="row">
 				<ExperienceColumn
 					:posts="content.object.metadata.academic"
+          :selectedLang="selectedLang"
 					title="Education"
 					class="col-12 col-md left"
 				/>
 				<ExperienceColumn
 					:posts="content.object.metadata.professional"
+          :selectedLang="selectedLang"
 					title="Professional"
 					class="col-12 col-md right"
 				/>
@@ -33,7 +35,7 @@ import ExperienceColumn from "./ExperienceColumn.vue";
 
 export default {
   name: "Experience",
-  props: ["content"],
+  props: ["content", "selectedLang"],
   components: {
     Title,
     ExperienceColumn

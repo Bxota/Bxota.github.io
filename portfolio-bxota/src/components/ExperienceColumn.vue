@@ -2,11 +2,17 @@
   <div>
     <h3 class="color-light">{{ title }}</h3>
     <div class="resume-item" v-for="(post, index) in posts" :key="index">
-      <div class="year color-darker">{{ post.year }}</div>
+      <div class="year color-darker">
+        <!-- Vérification pour voir si post.year et post.year[selectedLang] existent -->
+        {{ post.year && post.year[selectedLang] ? post.year[selectedLang] : 'Year not available' }}
+      </div>
       <div class="resume-description">
         <strong class="color-light" v-html="post.title"></strong>
       </div>
-      <div class="color-darker" v-html="post.content"></div>
+      <div class="color-darker">
+        <!-- Vérification pour voir si post.content et post.content[selectedLang] existent -->
+        <span v-html="post.content && post.content[selectedLang] ? post.content[selectedLang] : 'Content not available'"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -14,7 +20,7 @@
 <script>
 export default {
   name: "ExperienceColumn",
-  props: ["posts", "title"],
+  props: ["posts", "title", "selectedLang"], // Ajoute selectedLang comme prop
 };
 </script>
 
