@@ -1,44 +1,35 @@
 <template>
   <transition name="fade" tag="div" class="wrapper" mode="out-in">
-    <div class="wrapper" v-if="isLoaded" id="app">
-      <div>
-      </div>
-      <div>
-        <p>coucou</p>
-        <button @click="setLang('fr')">
-          <img id="imgLogo" class="img-responsive mx-auto d-block" :src="getImgUrl('french-flag.png')" :alt="post.title"/>
-        </button>
-      </div>
-      <button @click="toggleLang">Switch Language</button> <!-- Bouton pour changer la langue -->
-      <!-- <LandingPage :user="user" :selectedLang="selectedLang" /> -->
-      <!-- <Description :user="user" :content="description" :links="links" :selectedLang="selectedLang" /> -->
+    <div class="wrapper" v-if="isLoaded" id="app">      
+      <LandingPage :user="user" :selectedLang="selectedLang" @updateLang="setLang"/>
+      <Description :user="user" :content="description" :links="links" :selectedLang="selectedLang" />
       <!-- <Experience :content="experiences" :selectedLang="selectedLang" /> -->
-      <!-- <Skills :content="skills" :selectedLang="selectedLang" /> -->
-      <!-- <Projects :content="projects" :selectedLang="selectedLang" /> -->
-      <!-- <Footer :user="user" :links="links" /> -->
+      <Skills :content="skills" :selectedLang="selectedLang" />
+      <Projects :content="projects" :selectedLang="selectedLang"/>
+      <Footer :user="user" :links="links" />
     </div>
   </transition>
 </template>
 
 <script>
-//import LandingPage from "./components/LandingPage.vue";
-//import Description from "./components/Description.vue";
+import LandingPage from "./components/LandingPage.vue";
+import Description from "./components/Description.vue";
 //import Experience from "./components/Experience.vue";
-//import Skills from "./components/Skills.vue";
-//import Projects from "./components/Projects.vue";
-//import Footer from "./components/Footer.vue";
+import Skills from "./components/Skills.vue";
+import Projects from "./components/Projects.vue";
+import Footer from "./components/Footer.vue";
 
 import { cosmic } from "./cosmic.js";
 
 export default {
   name: "App",
   components: {
-    //LandingPage,
-    //Description,
+    LandingPage,
+    Description,
     //Experience,
-    //Skills,
-    //Projects,
-    //Footer,
+    Skills,
+    Projects,
+    Footer,
   },
   data: () => ({
     isLoaded: false,
@@ -48,30 +39,20 @@ export default {
     experiences: {},
     skills: {},
     projects: {},
-    selectedLang: 'en'
+    selectedLang: 'en' // Default language
   }),
   methods: {
     async fetchObject(slug) {
       return await cosmic.objects.findOne({
         type: slug,
         slug: slug
-      }).props("slug,title,metadata")
-      .depth(1)
-    },
-    toggleLang() { // Méthode pour changer la langue
-      this.selectedLang = this.selectedLang === "en" ? "fr" : "en";
+      }).props("slug,title,metadata").depth(1);
     },
     setLang(lang) {
       this.selectedLang = lang;
     },
     getImgUrl(img) {
-        return require('../assets/img/logo/'+img);
-    },
-    extractFirstObject(objects) {
-      if(objects.objects == null)
-        return void 0;
-      else
-        return objects.objects[0];
+      return require('./assets/img/logo/' + img);
     }
   },
   created() {
@@ -83,35 +64,24 @@ export default {
       this.fetchObject("experiences"),
       this.fetchObject("skills"),
       this.fetchObject("projects"),
-    ]).then(
-      ([
-        user_data,
-        description,
-        links,
-        experiences,
-        skills,
-        projects,
-      ]) => {
-        this.user = {
-          name: user_data.object.metadata.name,
-          status: user_data.object.metadata.status,
-          email: user_data.object.metadata.email,
-          phone: user_data.object.metadata.phone,
-          city: user_data.object.metadata.city,
-          lang: user_data.object.metadata.lang,
-          photo: user_data.object.metadata.photo,
-        };
-        this.description = description;
-        this.links = links;
-        this.experiences = experiences;
-        this.skills = skills;
-        this.projects = projects;
-        this.isLoaded = true;
-        this.$nextTick(() =>
-          document.body.classList.remove("loading")
-        );
-      }
-    );
+    ]).then(([user_data, description, links, experiences, skills, projects]) => {
+      this.user = {
+        name: user_data.object.metadata.name,
+        status: user_data.object.metadata.status,
+        email: user_data.object.metadata.email,
+        phone: user_data.object.metadata.phone,
+        city: user_data.object.metadata.city,
+        lang: user_data.object.metadata.lang,
+        photo: user_data.object.metadata.photo,
+      };
+      this.description = description;
+      this.links = links;
+      this.experiences = experiences;
+      this.skills = skills;
+      this.projects = projects;
+      this.isLoaded = true;
+      this.$nextTick(() => document.body.classList.remove("loading"));
+    });
   },
 };
 </script>

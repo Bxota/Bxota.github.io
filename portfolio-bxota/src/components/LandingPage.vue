@@ -8,6 +8,7 @@
         <hr />
         <AnimateOnVisible name="fadeUp" ::duration="1">
           <p>{{ user.status[selectedLang] }}</p>
+          <LanguageSwitcher :selectedLang="selectedLang" @updateLang="emitLangChange" />
         </AnimateOnVisible>
       </div>
     </div>
@@ -15,9 +16,19 @@
 </template>
 
 <script>
+import LanguageSwitcher from "./LanguageSwitcher.vue";
+
 export default {
   name: "LandingPage",
-  props: ["user", "selectedLang"]
+  props: ["user", "selectedLang"],
+  components: {
+    LanguageSwitcher
+  },
+  methods: {
+    emitLangChange(lang) {
+      this.$emit("updateLang", lang);
+    },
+  }
 };
 </script>
 
@@ -30,7 +41,7 @@ export default {
 }
 
 .parallax {
-  background-image: url("../assets/img/bg.jpg");
+  background-image: url("../assets/img/bg.jpeg");
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -59,7 +70,7 @@ export default {
     color: whitesmoke;
   }
 
-  p {
+  p, .language-switcher {
     font-size: 1.5rem;
     text-align: center;
     margin: 5px auto;
