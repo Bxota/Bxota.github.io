@@ -11,17 +11,42 @@
     <div class="container-fluid center-block">
       <article class="content text-center">
 
-		<AnimateOnVisible class="timeline mx-auto" v-for="(post, index) in content.object.metadata.items[selectedLang]" :key="index" name="fadeLeft" :duration="0.5">
-			<vue-timeline-update
+        <AnimateOnVisible
+      class="timeline mx-auto"
+      v-for="(post, index) in content.object.metadata.items[selectedLang]"
+      :key="index"
+      name="fadeLeft"
+      :duration="0.5"
+    >
+
+      <vue-timeline-update
+        :id="'toggle-' + index" 
+        v-b-toggle="'collapse-' + index"
+        variant="primary"
         :date="new Date(post.date)"
         :title="post.title"
-        :description="post.content"
+        :description="post.shortContent"
         :thumbnail="getImgUrl(post.image)"
         :color="post.color"
-        :category="post.tag"
+        :category="post.tag + ' | ' + post.languages"
         icon="code"
       />
-		</AnimateOnVisible>
+
+      <b-collapse :id="'collapse-' + index" class="mb-5">
+          <div class="gb-vue-timeline-update gb-vue-timeline-update--dark js-vue-timeline-update not-collapsed">
+            <div class="gb-vue-timeline-update__left"></div>
+            <div class="gb-vue-timeline-update__center">
+              <span class="gb-vue-timeline-update__line"></span>
+            </div>
+            <div class="gb-vue-timeline-update__right">
+              <div class="gb-vue-timeline-update__information">
+                <div class="gb-vue-timeline-update__meta"></div>
+              </div>
+              <p class="gb-vue-timeline-update__description">{{ post.content }}</p>
+            </div>
+          </div>
+      </b-collapse>
+    </AnimateOnVisible>
       </article>
     </div>
   </section>
@@ -34,7 +59,7 @@ export default {
   name: "Projects",
   props: ['content', 'selectedLang'],
   components: {
-    Title
+    Title,
   },
   methods: {
     getImgUrl(img) {
@@ -95,5 +120,14 @@ article .inner {
 h1 {
     margin-top: 10px;
     margin-bottom: 20px;
+}
+
+.content {
+  color: #a9c7df;
+  background-color: lighten(map-get($colors, primary), 5%);
+}
+
+.card-body {
+  background-color: lighten(map-get($colors, primary), 5%);
 }
 </style>
