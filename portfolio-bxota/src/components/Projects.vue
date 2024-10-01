@@ -42,7 +42,12 @@
               <div class="gb-vue-timeline-update__information">
                 <div class="gb-vue-timeline-update__meta"></div>
               </div>
-              <p class="gb-vue-timeline-update__description">{{ post.content }}</p>
+              <div class="gb-vue-timeline-update__description">
+                <p>{{ post.content }}</p>
+                <span v-if="post.link">
+                  Link : <a :href="post.link">{{ post.link }}</a>
+                </span>
+              </div>
             </div>
           </div>
       </b-collapse>
