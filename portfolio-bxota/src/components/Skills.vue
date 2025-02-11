@@ -9,7 +9,7 @@
                 <div class="row d-flex flex-wrap align-items-center">
                     <div class="col-md-2 m-auto pb-4" v-for="(post, index) in this.content.object.metadata.items" :key="index">
                         <AnimateOnVisible name="bounce">
-                            <img id="imgLogo" class="img-responsive mx-auto d-block" :src="getImgUrl(post.img)" :alt="post.title"/>
+                            <img id="imgLogo" class="mx-auto d-block" :src="getImgUrl(post.img)" :alt="post.title"/>
                             <div id="divAlt" class="altCaption text-center">{{post.title}}</div>
                         </AnimateOnVisible>
                     </div>
@@ -52,6 +52,24 @@
 
     img{
         max-width: 120px;
+    }
+
+    @media(max-width: #{map-get($breakpoints, medium)}) {
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        img{
+            max-width: 60px;
+            margin: 0 auto;
+        }
+
+        .col-md-2 {
+            width: 30%;
+            text-align: center;
+        }
     }
 
     .altCaption{
