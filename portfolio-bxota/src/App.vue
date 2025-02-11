@@ -4,6 +4,7 @@
       <LandingPage :user="user" :selectedLang="selectedLang" @updateLang="setLang"/>
       <Description :user="user" :content="description" :links="links" :selectedLang="selectedLang" />
       <!-- <Experience :content="experiences" :selectedLang="selectedLang" /> -->
+      <Certificates :content="certificates" :selectedLang="selectedLang" />
       <Skills :content="skills" :selectedLang="selectedLang" />
       <Projects :content="projects" :selectedLang="selectedLang"/>
       <Footer :user="user" :links="links" />
@@ -15,6 +16,7 @@
 import LandingPage from "./components/LandingPage.vue";
 import Description from "./components/Description.vue";
 //import Experience from "./components/Experience.vue";
+import Certificates from "./components/Certificates.vue";
 import Skills from "./components/Skills.vue";
 import Projects from "./components/Projects.vue";
 import Footer from "./components/Footer.vue";
@@ -27,6 +29,7 @@ export default {
     LandingPage,
     Description,
     //Experience,
+    Certificates,
     Skills,
     Projects,
     Footer,
@@ -37,6 +40,7 @@ export default {
     description: {},
     links: {},
     experiences: {},
+    certificates: {},
     skills: {},
     projects: {},
     selectedLang: 'en' // Default language
@@ -62,9 +66,10 @@ export default {
       this.fetchObject("description"),
       this.fetchObject("links"),
       this.fetchObject("experiences"),
+      this.fetchObject("certificates"),
       this.fetchObject("skills"),
       this.fetchObject("projects"),
-    ]).then(([user_data, description, links, experiences, skills, projects]) => {
+    ]).then(([user_data, description, links, experiences, certificates, skills, projects]) => {
       this.user = {
         name: user_data.object.metadata.name,
         status: user_data.object.metadata.status,
@@ -77,6 +82,7 @@ export default {
       this.description = description;
       this.links = links;
       this.experiences = experiences;
+      this.certificates = certificates;
       this.skills = skills;
       this.projects = projects;
       this.isLoaded = true;
