@@ -15,7 +15,6 @@ export default defineNuxtConfig({
   experimental: {
     payloadExtraction: false
   },
-
   app: {
     // Ici, c'est très important : baseURL = /nom-de-ton-repo/
     baseURL: '/',
