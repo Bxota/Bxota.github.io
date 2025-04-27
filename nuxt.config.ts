@@ -1,4 +1,4 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// nuxt.config.ts
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
 
@@ -17,6 +17,7 @@ export default defineNuxtConfig({
   },
 
   app: {
+    // Ici, c'est très important : baseURL = /nom-de-ton-repo/
     baseURL: '/',
     buildAssetsDir: 'assets',
     head: {
@@ -51,8 +52,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/sitemap',
-    '@nuxtjs/robots',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/robots'
   ],
   googleFonts: {
     families: {
