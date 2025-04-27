@@ -5,7 +5,20 @@ export default defineNuxtConfig({
     dir: 'dist',
     fallback: true
   },
-
+  styleResources: {
+    css: [
+      '~/assets/css/main.css',
+      '~/assets/css/variables.css',
+      '~/assets/css/reset.css',
+      '~/assets/css/base.css',
+      '~/assets/css/animations.css',
+      '~/assets/css/about.css',
+      '~/assets/css/header.css',
+      '~/assets/css/home.css',
+      '~/assets/css/work.css',
+      '~/assets/css/certificate.css'
+    ]
+  },
   css: [
     '~/assets/css/main.css',
     '~/assets/css/variables.css',
