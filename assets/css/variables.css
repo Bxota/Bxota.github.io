@@ -67,27 +67,33 @@
 
 @font-face {
   font-family: "Migra";
-  src: url(@/assets/fonts/Migra/Migra-Extralight.eot);
-  font-weight: 600;
+  src: url('../fonts/Migra/Migra-Extralight.eot');
+  src: url('../fonts/Migra/Migra-Extralight.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/Migra/Migra-Extralight.woff2') format('woff2'),
+       url('../fonts/Migra/Migra-Extralight.woff') format('woff');
+  font-weight: 200;
   font-style: normal;
   font-display: swap;
-  unicode-range: U+000-5FF
+  unicode-range: U+000-5FF;
 }
 
 @font-face {
   font-family: "Migra-extrabold";
-  src: url(@/assets/fonts/Migra/Migra-Extrabold.eot);
-  font-weight: 600;
+  src: url('../fonts/Migra/Migra-Extrabold.eot');
+  src: url('../fonts/Migra/Migra-Extrabold.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/Migra/Migra-Extrabold.woff2') format('woff2'),
+       url('../fonts/Migra/Migra-Extrabold.woff') format('woff');
+  font-weight: 800;
   font-style: normal;
   font-display: swap;
-  unicode-range: U+000-5FF
+  unicode-range: U+000-5FF;
 }
 
 @font-face {
   font-family: "Neue";
-  src: url(@/assets/fonts/Neue_Montreal/NeueMontreal-Medium.otf);
-  font-weight: 600;
+  src: url('../fonts/Neue_Montreal/NeueMontreal-Medium.otf') format('opentype');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
-  unicode-range: U+000-5FF
+  unicode-range: U+000-5FF;
 }

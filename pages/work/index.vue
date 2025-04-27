@@ -4,7 +4,7 @@
 
     <div class="projects-container">
       <article class="project-card">
-        <img class="project-image" src="@/assets/img/orisha.png">
+        <img class="project-image" src="/img/orisha.png">
         <div class="project-info">
           <h2 class="project-title">Healthcare Billing Engine</h2>
           <p class="project-description">
@@ -24,7 +24,7 @@
       </article>
 
       <article class="project-card">
-        <img class="project-image" src="@/assets/img/orisha.png">
+        <img class="project-image" src="/img/orisha.png">
         <div class="project-info">
           <h2 class="project-title">Smart Card Engine</h2>
           <p class="project-description">
@@ -42,7 +42,7 @@
       </article>
 
       <article class="project-card">
-        <img class="project-image" src="@/assets/img/orisha.png">
+        <img class="project-image" src="/img/orisha.png">
         <div class="project-info">
           <h2 class="project-title">FSE Dispatch</h2>
           <p class="project-description">
@@ -59,7 +59,7 @@
       </article>
 
       <article class="project-card">
-        <img class="project-image" src="@/assets/img/orisha.png">
+        <img class="project-image" src="/img/orisha.png">
         <div class="project-info">
           <h2 class="project-title">PyxCloud</h2>
           <p class="project-description">
@@ -77,7 +77,7 @@
       </article>
 
       <article class="project-card">
-        <img class="project-image" src="@/assets/img/github.webp">
+        <img class="project-image" src="/img/github.webp">
         <div class="project-info">
           <h2 class="project-title">Terminal</h2>
           <p class="project-description">
@@ -92,7 +92,7 @@
       </article>
 
       <article class="project-card">
-        <img class="project-image" src="@/assets/img/github.webp">
+        <img class="project-image" src="/img/github.webp">
         <div class="project-info">
           <h2 class="project-title">MovieShowTracker</h2>
           <p class="project-description">
@@ -108,7 +108,7 @@
       </article>
 
       <article class="project-card">
-        <img class="project-image" src="@/assets/img/orisha.png">
+        <img class="project-image" src="/img/orisha.png">
         <div class="project-info">
           <h2 class="project-title">FileManager</h2>
           <p class="project-description">
