@@ -28,7 +28,7 @@ export default defineNuxtConfig({
     display: 'swap'
   },
   sitemap: {
-    siteUrl: 'https://example.com',
+    siteUrl: 'https://bxota.github.io',
   },
   robots: {
     rules: [

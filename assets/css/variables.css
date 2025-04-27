@@ -67,8 +67,7 @@
 
 @font-face {
   font-family: "Migra";
-  src: url(../fonts/Migra/Migra-Extralight.eot);
-  src: url(../fonts/Migra/Migra-Extralight.eot?#iefix) format("embedded-opentype"),url(../fonts/Migra/Migra-Extralight.woff2) format("woff2"),url(../fonts/Migra/Migra-Extralight.woff) format("woff"),url(../fonts/Migra/Migra-Extralight.svg#Migra-Semibold) format("svg");
+  src: url(@/assets/fonts/Migra/Migra-Extralight.eot);
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -77,8 +76,7 @@
 
 @font-face {
   font-family: "Migra-extrabold";
-  src: url(../fonts/Migra/Migra-Extrabold.eot);
-  src: url(../fonts/Migra/Migra-Extrabold.eot?#iefix) format("embedded-opentype"),url(../fonts/Migra/Migra-Extrabold.woff2) format("woff2"),url(../fonts/Migra/Migra-Extrabold.woff) format("woff"),url(../fonts/Migra/Migra-Extrabold.svg#Migra-Semibold) format("svg");
+  src: url(@/assets/fonts/Migra/Migra-Extrabold.eot);
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -87,7 +85,7 @@
 
 @font-face {
   font-family: "Neue";
-  src: url(../fonts/Neue_Montreal/NeueMontreal-Medium.otf);
+  src: url(@/assets/fonts/Neue_Montreal/NeueMontreal-Medium.otf);
   font-weight: 600;
   font-style: normal;
   font-display: swap;
