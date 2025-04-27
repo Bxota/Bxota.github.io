@@ -8,8 +8,16 @@ export default defineNuxtConfig({
 
   css: [
     '~/assets/css/main.css',
+    '~/assets/css/variables.css',
+    '~/assets/css/reset.css',
+    '~/assets/css/base.css',
+    '~/assets/css/animations.css',
+    '~/assets/css/about.css',
+    '~/assets/css/header.css',
+    '~/assets/css/home.css',
+    '~/assets/css/work.css',
+    '~/assets/css/certificate.css'
   ],
-
   app: {
     // Ici, c'est très important : baseURL = /nom-de-ton-repo/
     baseURL: '/',
