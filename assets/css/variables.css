@@ -91,9 +91,9 @@
 
 @font-face {
   font-family: "Neue";
-  src: url(@/assets/fonts/Neue_Montreal/NeueMontreal-Medium.otf);
-  font-weight: 600;
+  src: url('../fonts/Neue_Montreal/NeueMontreal-Medium.otf') format('opentype');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
-  unicode-range: U+000-5FF
+  unicode-range: U+000-5FF;
 }

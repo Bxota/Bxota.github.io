@@ -54,12 +54,16 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxtjs/google-fonts'
   ],
-
   googleFonts: {
     families: {
       Montserrat: [300, 400, 600]
     },
-    display: 'swap'
+    display: 'swap',
+    // S'assurer que les polices sont téléchargées et incluses dans le build
+    download: true,
+    // Inclure les polices localement dans le build
+    fontsDir: 'assets/fonts',
+    fontsPath: 'fonts'
   },
 
   sitemap: {
