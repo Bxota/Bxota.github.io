@@ -1,6 +1,10 @@
 <script>
 import { NuxtLink } from "#components";
-import { RiGithubLine, RiLinkedinLine, RiMailLine, RiMenuLine, RiCloseLine } from "vue-remix-icons";
+import RiGithubLine from "vue-remix-icons/icons/ri-github-line.vue"
+import RiLinkedinLine from "vue-remix-icons/icons/ri-linkedin-line.vue"
+import RiMailLine from "vue-remix-icons/icons/ri-mail-line.vue"
+import RiMenuLine from "vue-remix-icons/icons/ri-menu-line.vue"
+import RiCloseLine from "vue-remix-icons/icons/ri-close-line.vue"
 
 export default {
   components: {
