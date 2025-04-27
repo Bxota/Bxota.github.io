@@ -1,26 +1,19 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// nuxt.config.ts
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
-  devtools: { enabled: true },
-  css: ['@/assets/css/main.css'],
-  nitro: {
-    prerender: {
-      crawlLinks: true,
-      routes: [
-        '/', '/work', '/certificates'
-      ]
-    }
-  },
-  routeRules: {
-    '/**': { redirect: false },
-  },
+  target: 'static',
   generate: {
-    subFolders: true,
+    dir: 'dist',
+    fallback: true
   },
-  // Configuration app spécifique pour GitHub Pages
+
+  css: [
+    '~/assets/css/main.css',
+  ],
+
   app: {
+    // Ici, c'est très important : baseURL = /nom-de-ton-repo/
     baseURL: '/',
-    buildAssetsDir: '/_nuxt/',
+    buildAssetsDir: '_nuxt/', // pas de / devant
     head: {
       link: [
         {
@@ -30,56 +23,39 @@ export default defineNuxtConfig({
       ]
     }
   },
-  
-  build: {
-    transpile: ['vue-remix-icons'],
-  },
-  
+
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/sitemap',
-    '@nuxtjs/robots',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/robots'
   ],
-  
-  googleFonts: {
-    families: {
-      Montserrat: [300, 400, 600]
-    },
-    display: 'swap',
-    // S'assurer que les polices sont téléchargées et incluses dans le build
-    download: true,
-    // Inclure les polices localement dans le build
-    fontsDir: 'assets/fonts',
-    fontsPath: 'fonts'
-  },
-  
+
   sitemap: {
     siteUrl: 'https://bxota.github.io',
   },
-  
-  robots: {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/'
-      }
-    ]
+
+  site: { 
+    url: 'https://bxota.github.io' 
   },
-  
-  // Assurez-vous que les ressources statiques sont correctement générées
+
+  robots: {
+    robotsTxt: false
+  },
+
   nitro: {
     prerender: {
       crawlLinks: true,
-      routes: ['/']
+      routes: [
+        '/', 
+        '/work',
+        '/certificates'
+      ]
     }
   },
-  
-  // Correction pour le dupliqué '@nuxtjs/tailwindcss' dans les modules
-  compilerOptions: {
-    paths: {
-      "~/*": ["./*"],
-      "@/*": ["./*"]
-    }
+
+  build: {
+    transpile: ['vue-remix-icons'],
   },
+
+  compatibilityDate: '2025-04-27'
 })
