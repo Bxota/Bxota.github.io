@@ -1,0 +1,29 @@
+/* Certificate page style */
+.download-button-certificate {
+  margin-bottom: var(--space-xxl);
+}
+
+.certificate-box {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.padding-small {
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.padding-medium {
+  padding: var(--space-sm) var(--space-md);
+}
+
+.padding-large {
+  padding: var(--space-md) var(--space-lg);
+}
+
+.certificate-image {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
