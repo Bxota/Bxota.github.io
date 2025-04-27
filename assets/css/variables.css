@@ -91,7 +91,7 @@
 
 @font-face {
   font-family: "Neue";
-  src: url(../fonts/Neue_Montreal/NeueMontreal-Medium.otf);
+  src: url(@/assets/fonts/Neue_Montreal/NeueMontreal-Medium.otf);
   font-weight: 600;
   font-style: normal;
   font-display: swap;
