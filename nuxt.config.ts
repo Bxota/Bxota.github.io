@@ -20,12 +20,6 @@ export default defineNuxtConfig({
     baseURL: '/',
     buildAssetsDir: 'assets',
     head: {
-      link: [
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'
-        }
-      ],
       meta: [
         {
           'http-equiv': 'Permissions-Policy',
@@ -33,15 +27,6 @@ export default defineNuxtConfig({
         }
       ]
     }
-  },
-
-  head: {
-    link: [
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'
-      }
-    ]
   },
 
   build: {
@@ -59,9 +44,7 @@ export default defineNuxtConfig({
       Montserrat: [300, 400, 600]
     },
     display: 'swap',
-    // S'assurer que les polices sont téléchargées et incluses dans le build
     download: true,
-    // Inclure les polices localement dans le build
     fontsDir: 'assets/fonts',
     fontsPath: 'fonts'
   },
