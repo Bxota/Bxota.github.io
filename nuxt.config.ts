@@ -49,23 +49,13 @@ export default defineNuxtConfig({
     fontsPath: 'fonts'
   },
 
-  sitemap: {
-    siteUrl: 'https://bxota.github.io',
-  },
-
   site: { 
-    url: 'https://bxota.github.io' 
+    url: 'https://bxota.github.io',
+    siteUrl: 'https://bxota.github.io'
   },
 
   robots: {
     robotsTxt: false
-  },
-
-  "compilerOptions": {
-    "paths": {
-      "~/*": ["./*"],
-      "@/*": ["./*"]
-    }
   },
 
   nitro: {
