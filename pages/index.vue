@@ -16,7 +16,7 @@
     </nav>
 
     <div class="contact-button-container">
-      <NuxtLink to="mailto:contact@example.com" class="contact-button">Contact</NuxtLink>
+      <NuxtLink to="mailto:thomas.pro.leterme@gmail.com" class="contact-button">Contact</NuxtLink>
     </div>
   </main>
 </template>

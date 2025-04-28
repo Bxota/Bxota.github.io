@@ -4,7 +4,7 @@
 
     <div class="projects-container">
       <article class="project-card">
-        <img class="certificate-image" src="@/assets/img/hacker_rank.png">
+        <img class="certificate-image" src="/img/hacker_rank.png">
         <div class="project-info">
           <h2 class="project-title">C#</h2>
           <div class="certificate-box">
@@ -17,7 +17,7 @@
       </article>
 
       <article class="project-card">
-        <img class="certificate-image" src="@/assets/img/hacker_rank.png">
+        <img class="certificate-image" src="/img/hacker_rank.png">
         <div class="project-info">
           <h2 class="project-title">GoLang</h2>
           <div class="certificate-box">
@@ -30,7 +30,7 @@
       </article>
 
       <article class="project-card">
-        <img class="certificate-image" src="@/assets/img/hacker_rank.png">
+        <img class="certificate-image" src="/img/hacker_rank.png">
         <div class="project-info">
           <h2 class="project-title">SQL</h2>
           <div class="certificate-box">
@@ -43,7 +43,7 @@
       </article>
 
       <article class="project-card">
-        <img class="certificate-image" src="@/assets/img/hacker_rank.png">
+        <img class="certificate-image" src="/img/hacker_rank.png">
         <div class="project-info">
           <h2 class="project-title">SQL</h2>
           <div class="certificate-box">
@@ -56,7 +56,7 @@
       </article>
 
       <article class="project-card">
-        <img class="certificate-image" src="@/assets/img/hacker_rank.png">
+        <img class="certificate-image" src="/img/hacker_rank.png">
         <div class="project-info">
           <h2 class="project-title">Software Engineer</h2>
           <div class="certificate-box">
@@ -67,7 +67,7 @@
       </article>
 
       <article class="project-card">
-        <img class="certificate-image" src="@/assets/img/hacker_rank.png">
+        <img class="certificate-image" src="/img/hacker_rank.png">
         <div class="project-info">
           <h2 class="project-title">Solving Problems</h2>
           <div class="certificate-box">

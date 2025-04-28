@@ -1,6 +1,8 @@
 <template>
   <div>
-    <a class="download-button" :class="sizeClass" :href="url" :download="title">{{ this.title }}</a>
+    <a class="download-button" :class="sizeClass" :href="url" :download="title">
+      {{ title }}
+    </a>
   </div>
 </template>
 
