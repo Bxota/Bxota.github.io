@@ -41,13 +41,11 @@ export default defineNuxtConfig({
   ],
   googleFonts: {
     families: {
-      Montserrat: {
-       wght: [300, 400, 600]
-      }
+      Montserrat: 'ital,wght@0,100..900;1,100..900'
     },
     display: 'swap',
     download: true,
-    fontsDir: 'assets/fonts',
+    fontsDir: 'assets',
     fontsPath: 'fonts'
   },
 
