@@ -15,8 +15,8 @@ export default defineNuxtConfig({
   experimental: {
     payloadExtraction: false
   },
+
   app: {
-    // Ici, c'est très important : baseURL = /nom-de-ton-repo/
     baseURL: '/',
     buildAssetsDir: 'assets',
     head: {
@@ -51,7 +51,8 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/sitemap',
-    '@nuxtjs/robots'
+    '@nuxtjs/robots',
+    '@nuxtjs/google-fonts'
   ],
   googleFonts: {
     families: {
