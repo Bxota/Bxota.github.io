@@ -5,36 +5,10 @@ export default defineNuxtConfig({
     dir: 'dist',
     fallback: true
   },
-  styleResources: {
-    css: [
-      '~/assets/css/main.css',
-      '~/assets/css/variables.css',
-      '~/assets/css/reset.css',
-      '~/assets/css/base.css',
-      '~/assets/css/animations.css',
-      '~/assets/css/about.css',
-      '~/assets/css/header.css',
-      '~/assets/css/home.css',
-      '~/assets/css/work.css',
-      '~/assets/css/certificate.css'
-    ]
-  },
-  css: [
-    '~/assets/css/main.css',
-    '~/assets/css/variables.css',
-    '~/assets/css/reset.css',
-    '~/assets/css/base.css',
-    '~/assets/css/animations.css',
-    '~/assets/css/about.css',
-    '~/assets/css/header.css',
-    '~/assets/css/home.css',
-    '~/assets/css/work.css',
-    '~/assets/css/certificate.css'
-  ],
   app: {
     // Ici, c'est très important : baseURL = /nom-de-ton-repo/
-    baseURL: '/',
-    buildAssetsDir: '_nuxt/', // pas de / devant
+    baseURL: '/Bxota.github.io',
+    buildAssetsDir: 'assets', // pas de / devant
     head: {
       link: [
         {
