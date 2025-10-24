@@ -16,7 +16,7 @@
 }
 
 .main-heading {
-  font-family: 'Montserrat';
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   font-size: var(--fs-xxl);
   max-width: 900px;
   position: relative;

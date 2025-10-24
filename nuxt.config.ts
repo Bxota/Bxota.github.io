@@ -4,7 +4,10 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  css: ['@/assets/css/main.css'],
+  alias: {
+    '/css': '/assets/css'
+  },
+  css: ['~/assets/css/main.css'],
 
   router: {
     options: {

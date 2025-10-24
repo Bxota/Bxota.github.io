@@ -4,6 +4,40 @@
 
     <div class="projects-container">
       <article class="project-card">
+        <img class="project-image project-image--contain" src="/img/epitech.png">
+        <div class="project-info">
+          <h2 class="project-title">Time Manager</h2>
+          <p class="project-description">
+            Study project to managed check-in and check-out for employees.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python - Django</span>
+            <span class="tag">React</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-image project-image-group">
+          <img class="project-image-group__logo" src="/img/epitech.png" alt="Epitech">
+          <img class="project-image-group__logo" src="/img/elysee.png" alt="Elysée">
+        </div>
+        <div class="project-info">
+          <h2 class="project-title">Follow up vaccination</h2>
+          <p class="project-description">
+            Optimization of the influenza vaccination strategy: predicting needs and improving access to healthcare.
+            <br/>
+            This project is a Proof Of Concept done in 2 days.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python - Django</span>
+            <span class="tag">React</span>
+            <span class="tag">Hackathon</span>
+          </div>
+        </div>
+      </article>
+      
+      <article class="project-card">
         <img class="project-image" src="/img/orisha.png">
         <div class="project-info">
           <h2 class="project-title">Healthcare Billing Engine</h2>
@@ -77,7 +111,7 @@
       </article>
 
       <article class="project-card">
-        <img class="project-image" src="/img/github.webp">
+        <img class="project-image" src="/img/github.png">
         <div class="project-info">
           <h2 class="project-title">Terminal</h2>
           <p class="project-description">
@@ -92,9 +126,9 @@
       </article>
 
       <article class="project-card">
-        <img class="project-image" src="/img/github.webp">
+        <img class="project-image" src="/img/github.png">
         <div class="project-info">
-          <h2 class="project-title">MovieShowTracker</h2>
+          <h2 class="project-title">Movie Show Tracker</h2>
           <p class="project-description">
             Android app to track movies and shows, inspired by Letterboxd.
           </p>
@@ -110,7 +144,7 @@
       <article class="project-card">
         <img class="project-image" src="/img/orisha.png">
         <div class="project-info">
-          <h2 class="project-title">FileManager</h2>
+          <h2 class="project-title">File Manager</h2>
           <p class="project-description">
             Cloud file management tool for listing, editing, and organizing files.
           </p>
