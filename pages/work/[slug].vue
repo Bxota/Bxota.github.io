@@ -85,7 +85,11 @@ if (project.value.github) {
   if (readmeError.value) {
     githubReadmeError.value = 'The README is not available right now.';
   } else {
-    githubReadmeHtml.value = readmeData.value ?? null;
+    const rawHtml = readmeData.value;
+    githubReadmeHtml.value =
+      rawHtml !== null && rawHtml !== undefined
+        ? rewriteGithubReadmeLinks(rawHtml)
+        : null;
   }
 
   const { data: languagesData, error: languagesError } = await useFetch<GithubLanguages>(
@@ -122,6 +126,36 @@ const escapeCssIdentifier = (value: string) => {
     return CSS.escape(value);
   }
   return value.replace(/[^A-Za-z0-9_-]/g, '\\$&');
+};
+
+const rewriteGithubReadmeLinks = (html: string) => {
+  if (!project.value.github) {
+    return html;
+  }
+
+  const { owner, repo } = project.value.github;
+  const baseUrl = `https://github.com/${owner}/${repo}/blob/HEAD/`;
+
+  return html.replace(/href="([^"]+)"/gi, (fullMatch, href) => {
+    if (!href) {
+      return fullMatch;
+    }
+
+    if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(href)) {
+      return fullMatch;
+    }
+
+    if (href.startsWith('/')) {
+      return `href="https://github.com${href}"`;
+    }
+
+    try {
+      const absoluteUrl = new URL(href, baseUrl).toString();
+      return `href="${absoluteUrl}"`;
+    } catch {
+      return fullMatch;
+    }
+  });
 };
 
 const enhanceReadmeAnchors = () => {

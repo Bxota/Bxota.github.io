@@ -42,7 +42,7 @@ export default defineNuxtConfig({
   ],
   googleFonts: {
     families: {
-      Montserrat: 'ital,wght@0,100..900;1,100..900'
+      Montserrat: [300, 400, 500, 600]
     },
     display: 'swap',
     download: true,
