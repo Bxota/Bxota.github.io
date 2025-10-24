@@ -1,4 +1,8 @@
 // nuxt.config.ts
+import { workProjects } from './data/work-projects';
+
+const workProjectRoutes = workProjects.map((project) => `/work/${project.slug}`);
+
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
 
@@ -8,12 +12,6 @@ export default defineNuxtConfig({
     '/css': '/assets/css'
   },
   css: ['~/assets/css/main.css'],
-
-  router: {
-    options: {
-      hashMode: true
-    }
-  },
 
   experimental: {
     payloadExtraction: false
@@ -70,6 +68,7 @@ export default defineNuxtConfig({
         '/work',
         '/certificates',
         '/about',
+        ...workProjectRoutes,
       ]
     }
   }
