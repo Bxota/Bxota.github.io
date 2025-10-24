@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
 import { useRoute, useHead, useFetch, createError, useRouter } from '#imports';
+import type { UseFetchOptions } from '#app';
 import { findWorkProject, type WorkProject } from '~/data/work-projects';
 
 interface GithubRepository {
@@ -56,7 +57,7 @@ if (project.value.github) {
     'X-GitHub-Api-Version': '2022-11-28',
   };
 
-  const { data, error } = await useFetch<GithubRepository>(
+  const repoResponse = await fetchGithubResource<GithubRepository>(
     `https://api.github.com/repos/${owner}/${repo}`,
     {
       headers: commonHeaders,
@@ -64,13 +65,13 @@ if (project.value.github) {
     },
   );
 
-  if (error.value) {
+  if (repoResponse.error) {
     githubRepoError.value = 'Unable to retrieve GitHub repository details right now.';
   } else {
-    githubRepo.value = data.value ?? null;
+    githubRepo.value = repoResponse.data ?? null;
   }
 
-  const { data: readmeData, error: readmeError } = await useFetch<string>(
+  const readmeResponse = await fetchGithubResource<string>(
     `https://api.github.com/repos/${owner}/${repo}/readme`,
     {
       headers: {
@@ -82,17 +83,17 @@ if (project.value.github) {
     },
   );
 
-  if (readmeError.value) {
+  if (readmeResponse.error) {
     githubReadmeError.value = 'The README is not available right now.';
   } else {
-    const rawHtml = readmeData.value;
+    const rawHtml = readmeResponse.data;
     githubReadmeHtml.value =
       rawHtml !== null && rawHtml !== undefined
         ? rewriteGithubReadmeLinks(rawHtml)
         : null;
   }
 
-  const { data: languagesData, error: languagesError } = await useFetch<GithubLanguages>(
+  const languagesResponse = await fetchGithubResource<GithubLanguages>(
     `https://api.github.com/repos/${owner}/${repo}/languages`,
     {
       headers: commonHeaders,
@@ -100,10 +101,10 @@ if (project.value.github) {
     },
   );
 
-  if (languagesError.value) {
+  if (languagesResponse.error) {
     githubLanguagesError.value = 'Unable to retrieve language statistics.';
-  } else if (languagesData.value) {
-    githubLanguages.value = Object.entries(languagesData.value)
+  } else if (languagesResponse.data) {
+    githubLanguages.value = Object.entries(languagesResponse.data)
       .sort(([, bytesA], [, bytesB]) => bytesB - bytesA)
       .map(([language]) => language);
   }
@@ -126,6 +127,21 @@ const escapeCssIdentifier = (value: string) => {
     return CSS.escape(value);
   }
   return value.replace(/[^A-Za-z0-9_-]/g, '\\$&');
+};
+
+const fetchGithubResource = async <T>(
+  url: string,
+  options: UseFetchOptions<T> = {},
+) => {
+  try {
+    const { data, error } = await useFetch<T>(url, options);
+    if (error.value) {
+      return { data: null, error: error.value };
+    }
+    return { data: data.value ?? null, error: null };
+  } catch (fetchError) {
+    return { data: null, error: fetchError };
+  }
 };
 
 const rewriteGithubReadmeLinks = (html: string) => {
