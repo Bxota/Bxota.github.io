@@ -38,8 +38,25 @@ const manualProjectUrls = new Set(
     .filter((url) => url.length > 0)
 );
 
+const resolvedGithubData = computed<PortfolioRepository[]>(() => {
+  const value = githubData.value;
+
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  if (value) {
+    console.warn('Unexpected GitHub data payload', value);
+    if (!githubError.value) {
+      githubError.value = 'Les projets GitHub ne peuvent pas être affichés pour le moment.';
+    }
+  }
+
+  return [];
+});
+
 const githubProjects = computed<PortfolioRepository[]>(() =>
-  (githubData.value ?? []).filter((repo) => {
+  resolvedGithubData.value.filter((repo) => {
     const repoUrl = repo.html_url?.toLowerCase();
     return !repoUrl || !manualProjectUrls.has(repoUrl);
   })
@@ -52,7 +69,7 @@ const availableTopics = computed(() => {
     project.topics?.forEach((topic) => topicSet.add(topic));
   });
 
-  (githubData.value ?? []).forEach((repo) => {
+  resolvedGithubData.value.forEach((repo) => {
     repo.topics?.forEach((topic) => topicSet.add(topic));
   });
 
@@ -65,7 +82,7 @@ const projectNameSuggestions = computed(() => {
   const names = new Set<string>();
 
   manualProjects.forEach((project) => names.add(project.name));
-  (githubData.value ?? []).forEach((repo) => names.add(repo.name));
+  resolvedGithubData.value.forEach((repo) => names.add(repo.name));
 
   return Array.from(names).sort((a, b) =>
     a.localeCompare(b, 'fr', { sensitivity: 'base' })
