@@ -10,7 +10,9 @@ const { data: githubData, pending: githubPending } = await useAsyncData(
   async () => {
     try {
       githubError.value = null;
-      return await $fetch<PortfolioRepository[]>('/api/github');
+      return await $fetch<PortfolioRepository[]>('/api/github', {
+        responseType: 'json'
+      });
     } catch (error) {
       console.error('Failed to load GitHub repositories for the work page', error);
       githubError.value =
