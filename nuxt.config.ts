@@ -1,8 +1,4 @@
 // nuxt.config.ts
-import { workProjects } from './data/work-projects';
-
-const workProjectRoutes = workProjects.map((project) => `/work/${project.slug}`);
-
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
 
@@ -50,6 +46,10 @@ export default defineNuxtConfig({
     fontsPath: 'fonts'
   },
 
+  runtimeConfig: {
+    githubToken: process.env.GH_TOKEN,
+  },
+
   site: { 
     url: 'https://bxota.github.io',
     siteUrl: 'https://bxota.github.io'
@@ -68,7 +68,7 @@ export default defineNuxtConfig({
         '/work',
         '/certificates',
         '/about',
-        ...workProjectRoutes,
+        '/api/github',
       ]
     }
   }
