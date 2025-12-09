@@ -294,7 +294,7 @@ const otherGithubProjects = computed<PortfolioRepository[]>(() =>
           <h3 class="github-projects__subtitle">Projets d'études - École 89</h3>
           <div class="projects-container">
             <GithubProjectCard v-for="repo in ecole89GithubProjects" :key="repo.html_url" :repo="repo"
-              image-alt="Logo École 89" image-path="/img/orisha.png" />
+              image-alt="Logo École 89" image-path="/img/ecole89.webp" />
           </div>
         </div>
 
