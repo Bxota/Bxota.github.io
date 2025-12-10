@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ECOLE89_TOPIC, EPITECH_TOPIC } from '~/constants/topics';
+import { ECOLE89_TOPIC, EPITECH_TOPIC, PORTFOLIO_TOPIC } from '~/constants/topics';
 import { workProjects } from '~/data/work-projects';
 import type { PortfolioRepository } from '~/types/portfolio';
 
