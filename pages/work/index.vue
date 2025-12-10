@@ -10,9 +10,39 @@ const { data: githubData, pending: githubPending } = await useAsyncData(
   async () => {
     try {
       githubError.value = null;
-      return await $fetch<PortfolioRepository[]>('/api/github', {
-        responseType: 'json'
-      });
+
+      // Call GitHub directly on each page load so the list is always fresh.
+      const repositories = await $fetch(
+        'https://api.github.com/users/Bxota/repos?per_page=100',
+        {
+          headers: {
+            Accept: 'application/vnd.github+json'
+          }
+        }
+      );
+
+      if (!Array.isArray(repositories)) {
+        console.warn('Unexpected GitHub payload', repositories);
+        return [];
+      }
+
+      return repositories
+        .filter(
+          (repo: { topics?: string[] }) =>
+            Array.isArray(repo.topics) && repo.topics.includes(PORTFOLIO_TOPIC)
+        )
+        .map((repo: any): PortfolioRepository => ({
+          name: repo.name,
+          html_url: repo.html_url,
+          description: repo.description ?? '',
+          topics: repo.topics ?? [],
+          updated_at: repo.updated_at,
+          pushed_at: repo.pushed_at
+        }))
+        .sort(
+          (left, right) =>
+            new Date(right.pushed_at).getTime() - new Date(left.pushed_at).getTime()
+        );
     } catch (error) {
       console.error('Failed to load GitHub repositories for the work page', error);
       githubError.value =
