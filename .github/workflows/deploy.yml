@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  VITE_GITHUB_USERNAME: Bxota
+  VITE_GITHUB_USERNAME: ${{ secrets.VITE_GITHUB_USERNAME }}
   VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
 
 jobs:

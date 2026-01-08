@@ -45,6 +45,7 @@ export type ProfileOverview = {
 
 const API_ROOT = 'https://api.github.com'
 const token = import.meta.env.VITE_GITHUB_TOKEN
+const FALLBACK_GITHUB_USERNAME = 'Bxota'
 
 const baseHeaders: HeadersInit = {
   Accept: 'application/vnd.github+json',
@@ -52,7 +53,7 @@ const baseHeaders: HeadersInit = {
 }
 
 function resolveUsername(username?: string) {
-  return username || import.meta.env.VITE_GITHUB_USERNAME
+  return username || import.meta.env.VITE_GITHUB_USERNAME || FALLBACK_GITHUB_USERNAME
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
