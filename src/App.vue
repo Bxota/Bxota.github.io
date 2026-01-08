@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import MastheadBadge from './components/MastheadBadge.vue'
-import TileCard from './components/TileCard.vue'
 import { fetchProfileOverview, type ProfileOverview } from './services/githubApi'
 
 type SocialIcon = 'linkedin' | 'github' | 'email' | 'phone'
 type SocialLink = { label: string; href: string; icon: SocialIcon; copy?: string; target?: string }
 type Certification = { label: string; value: string }
+type TechLogo = { name: string; logo: string }
 
 const phoneNumber = '+336953122449'
 const socialLinks: SocialLink[] = [
@@ -43,23 +42,33 @@ const certifications: Certification[] = [
   { label: 'Software engineering', value: 'Basic' },
 ]
 
+const projectColors = ['#ebe8ff', '#e5f5ff', '#ffe9d8', '#e7f5e0']
+
+const techLogos: TechLogo[] = [
+  { name: 'TypeScript', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
+  { name: 'Vue.js', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg' },
+  { name: 'Go', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg' },
+  { name: 'Python', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
+  { name: 'PHP', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg' },
+  { name: 'C#', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg' },
+  { name: 'Kotlin', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg' },
+  { name: 'Swift', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg' },
+  { name: 'Django', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg' },
+  { name: 'Symfony', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/symfony/symfony-original.svg' },
+  { name: 'Electron', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg' },
+  { name: 'Bootstrap', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg' },
+  { name: 'Docker', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg' },
+  { name: 'PostgreSQL', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
+  { name: 'AWS', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg' },
+  { name: 'Git', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
+]
+
+const techMarqueeItems = computed(() => [...techLogos, ...techLogos])
+
 const githubProfile = ref<ProfileOverview | null>(null)
 const githubError = ref(false)
 const isProjectsModalOpen = ref(false)
 const bodyOverflow = ref('')
-
-const githubTitle = computed(() => {
-  if (githubProfile.value?.username) {
-    return `GitHub · @${githubProfile.value.username}`
-  }
-  return 'GitHub'
-})
-
-const githubCopy = computed(() => {
-  if (githubError.value) return 'GitHub non disponible'
-  if (!githubProfile.value) return 'Chargement...'
-  return `${githubProfile.value.followers} followers · ${githubProfile.value.publicRepos} repos publics`
-})
 
 const githubReposAll = computed(() => githubProfile.value?.repos ?? [])
 
@@ -124,156 +133,146 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="page">
-    <header class="masthead">
-      <MastheadBadge title="Thomas LETERME" copy="Fullstack Developer">
-        <template #icon>
-          <svg class="masthead__icon-user" viewBox="0 0 24 24" role="img" aria-hidden="true">
-            <path
-              d="M12 12a4 4 0 1 0-4-4 4.003 4.003 0 0 0 4 4m0 2c-3.33 0-6 2-6 4v1h12v-1c0-2-2.67-4-6-4"
-              fill="currentColor"
-            />
-          </svg>
-        </template>
-      </MastheadBadge>
-      <MastheadBadge title="Alternant chez Yunohit" copy="Bordeaux, France">
-        <template #icon>
-          <span class="masthead__dot" aria-hidden="true"></span>
-        </template>
-      </MastheadBadge>
-      <MastheadBadge :title="githubTitle" :copy="githubCopy">
-        <template #icon>
-          <svg class="masthead__icon-github" viewBox="0 0 16 16" role="img" aria-hidden="true">
-            <path
-              d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38l-.01-1.35c-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 2-.27 7.6 7.6 0 0 1 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48l-.01 2.2c0 .21.15.45.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8"
-            />
-          </svg>
-        </template>
-      </MastheadBadge>
-      <MastheadBadge
-        v-for="link in socialLinks"
-        :key="link.label"
-        :href="link.href"
-        :target="link.target || undefined"
-        :title="link.label"
-        :copy="link.copy"
-        hover-reveal
-        class="masthead__badge--social"
-      >
-        <template #icon>
-          <div class="masthead__social">
-            <svg
-              class="masthead__social-icon"
-              :viewBox="iconViewBox[link.icon]"
-              role="img"
-              aria-hidden="true"
-            >
-              <path :d="iconPaths[link.icon]" fill="currentColor" />
-            </svg>
-            <span class="sr-only">{{ link.label }}</span>
-          </div>
-        </template>
-      </MastheadBadge>
-    </header>
-
-    <section class="mosaic">
-      <div class="mosaic__grid">
-        <TileCard variant="media" tone="accent" class="photo-tile mosaic__photo">
-          <div class="photo-card">
-            <img src="/thomas.jpeg" alt="Portrait de Thomas Leterme" class="photo-img" />
-          </div>
-        </TileCard>
-
-        <TileCard variant="media" tone="ghost" class="location-tile mosaic__loc">
-          <div class="map-embed" v-if="mapboxStaticUrl">
-            <img :src="mapboxStaticUrl" alt="Bordeaux sur la carte" loading="lazy" />
-          </div>
-          <p v-else class="project__empty">Token Mapbox manquant ou invalide.</p>
-        </TileCard>
-
-        <TileCard eyebrow="Ecole" tone="ghost" class="mosaic__school">
-          <span>
-            Epitech Bordeaux • <span style="color: var(--muted);"><i>en cours</i></span>
-            <p class="muted">Master en architecture des SI </p>
-          </span>
-        </TileCard>
-
-        <TileCard eyebrow="Mes projets" class="mosaic__projects" tone="ghost">
-          <template #header-action>
-            <button
-              v-if="githubHasRepos && !githubError"
-              type="button"
-              class="projects__see-all"
-              @click="openProjectsModal"
-            >
-              Tout voir
-            </button>
-          </template>
-          <ul class="projects">
-            <li v-if="githubError" class="project__empty">
-              Impossible de charger les projets GitHub pour le moment.
-            </li>
-            <li v-else-if="!githubProfile" class="project__empty">Chargement des projets GitHub…</li>
-            <li v-else-if="!githubReposTop3.length" class="project__empty">Aucun projet public trouvé.</li>
-            <li v-else v-for="repo in githubReposTop3" :key="repo.id">
-              <a class="project__link" :href="repo.url" target="_blank" rel="noreferrer">
-                <div>
-                  <p class="project__title">{{ repo.name }}</p>
-                  <p class="muted project__detail">{{ repo.description || 'Aucune description pour le moment.' }}</p>
-                  <p class="project__meta">
-                    <span v-if="repo.language">{{ repo.language }}</span>
-                    <span>★ {{ repo.stars }}</span>
-                  </p>
-                </div>
-                <span class="project__status">GitHub</span>
-              </a>
-            </li>
-          </ul>
-        </TileCard>
-
-        <TileCard eyebrow="Certifications" tone="ghost" class="mosaic__current">
-          <ul class="list">
-            <li v-for="item in certifications" :key="item.label">
-              <span>{{ item.label }}</span>
-              <span class="muted">{{ item.value }}</span>
-            </li>
-          </ul>
-        </TileCard>
+    <nav class="topbar">
+      <div class="topbar_brand">
+        <div class="brand">
+          <span class="brand__dot" aria-hidden="true"></span>
+          <span class="brand__name">Thomas Leterme</span>
+        </div>
+        <a href="https://yunohit.com" class="brand" target="_blank" rel="noreferrer">
+          <span class="brand__dot brand__dot__red" aria-hidden="true"></span>
+          <span class="brand__name">Alternant chez Yunohit</span>
+          <img class="brand__logo" src="/yunohit.png" alt="logo Yunohit" loading="lazy" />
+        </a>
       </div>
+      <ul class="topbar__links">
+        <li><a href="#work">Projets</a></li>
+        <li><a href="#skills">Compétences</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
 
-      <TileCard eyebrow="Compétences" class="skills-tile mosaic__skills" tone="ghost">
-        <div class="skills-grid">
-          <div class="skills-group">
-            <p class="skills-group__title">Langages de programmation</p>
-            <div class="pill-grid">
-              <span v-for="item in ['VB', 'C#', 'C', 'C++', 'Go', 'Python', 'Php', 'TypeScript', 'Kotlin', 'Swift']" :key="item" class="pill">{{ item }}</span>
-            </div>
-          </div>
-          <div class="skills-group">
-            <p class="skills-group__title">Frameworks</p>
-            <div class="pill-grid">
-              <span v-for="item in ['VueJS', 'Symfony', 'Django', 'ElectronJs', 'CosmicJs', 'Bootstrap', 'Capacitor']" :key="item" class="pill">{{ item }}</span>
-            </div>
-          </div>
-          <div class="skills-group">
-            <p class="skills-group__title">Base de données</p>
-            <div class="pill-grid">
-              <span v-for="item in ['Oracle', 'PostgreSQL', 'MariaDB', 'S3 (AWS)']" :key="item" class="pill">{{ item }}</span>
-            </div>
-          </div>
-          <div class="skills-group">
-            <p class="skills-group__title">Cloud</p>
-            <div class="pill-grid">
-              <span v-for="item in ['AWS', 'Scaleway', 'OVH', 'Azure', 'Grafana']" :key="item" class="pill">{{ item }}</span>
-            </div>
-          </div>
-          <div class="skills-group">
-            <p class="skills-group__title">Outils</p>
-            <div class="pill-grid">
-              <span v-for="item in ['Atlassian (Jira)', 'Git', 'TFS', 'Visual Studio', 'Visual Studio Code', 'Docker', 'WSL']" :key="item" class="pill">{{ item }}</span>
-            </div>
+    <section class="hero-grid">
+      <div class="card hero-card">
+        <p class="hero-card__eyebrow">Développeur Fullstack — Bordeaux</p>
+        <h1 class="hero-card__title">Thomas Leterme</h1>
+        <p class="hero-card__lede">
+          En train de valider un Master of Science à Epitech Bordeaux.
+        </p>
+        <div class="hero-card__meta">
+          <template v-if="githubProfile">
+            <p class="muted">GitHub · @{{ githubProfile.username }}</p>
+            <p class="muted">{{ githubProfile.followers }} followers · {{ githubProfile.publicRepos }} repos publics</p>
+          </template>
+          <p v-else-if="githubError" class="muted">GitHub non disponible</p>
+          <p v-else class="muted">Chargement du profil GitHub…</p>
+        </div>
+        <div class="hero-card__actions">
+          <a id="contact" class="btn btn--primary" href="mailto:thomas.pro.leterme@gmail.com">Me contacter</a>
+          <div class="social-buttons">
+            <a
+              v-for="link in socialLinks"
+              :key="link.label"
+              class="social-buttons__item"
+              :href="link.href"
+              :target="link.target || undefined"
+              rel="noreferrer"
+            >
+              <svg class="social-buttons__icon" :viewBox="iconViewBox[link.icon]" role="img" aria-hidden="true">
+                <path :d="iconPaths[link.icon]" fill="currentColor" />
+              </svg>
+              <span class="sr-only">{{ link.label }}</span>
+            </a>
           </div>
         </div>
-      </TileCard>
+      </div>
+
+      <div class="card photo-card">
+        <img src="/thomas.jpeg" alt="Portrait de Thomas Leterme" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="tech-marquee card">
+      <div class="tech-marquee__header">
+        <p class="card__eyebrow">Compétences</p>
+        <p class="tech-marquee__hint">Ils m'ont fait confiance</p>
+      </div>
+      <div class="tech-marquee__viewport">
+        <div class="tech-marquee__track">
+          <div v-for="(tech, index) in techMarqueeItems" :key="tech.name + index" class="tech-chip">
+            <img class="tech-chip__logo" :src="tech.logo" :alt="tech.name" loading="lazy" />
+            <span class="tech-chip__label">{{ tech.name }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery" id="work">
+      <article
+        v-for="(repo, index) in githubReposTop3"
+        :key="repo.id"
+        class="card project-card"
+        :style="{ '--card-accent': projectColors[index % projectColors.length] }"
+      >
+        <p class="card__eyebrow">Projet GitHub</p>
+        <h3 class="card__title">{{ repo.name }}</h3>
+        <p class="muted card__desc">{{ repo.description || 'Aucune description pour le moment.' }}</p>
+        <div class="card__footer">
+          <div class="chips">
+            <span v-if="repo.language" class="chip">{{ repo.language }}</span>
+            <span class="chip">★ {{ repo.stars }}</span>
+          </div>
+          <a class="pill-link" :href="repo.url" target="_blank" rel="noreferrer">
+            <svg class="social-buttons__icon" :viewBox="iconViewBox.github" role="img" aria-hidden="true">
+              <path :d="iconPaths.github" fill="currentColor" />
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <article v-if="githubError" class="card project-card card--placeholder">
+        <p class="card__eyebrow">GitHub</p>
+        <h3 class="card__title">Impossible de charger les projets</h3>
+        <p class="muted">GitHub n'est pas disponible pour le moment.</p>
+      </article>
+
+      <article v-else-if="!githubProfile" class="card project-card card--placeholder">
+        <p class="card__eyebrow">GitHub</p>
+        <h3 class="card__title">Chargement...</h3>
+        <p class="muted">Je récupère les projets publics.</p>
+      </article>
+
+      <article v-else-if="!githubReposTop3.length" class="card project-card card--placeholder">
+        <p class="card__eyebrow">GitHub</p>
+        <h3 class="card__title">Aucun projet public trouvé</h3>
+        <p class="muted">Dès qu'un dépôt sera disponible, il apparaîtra ici.</p>
+      </article>
+
+      <!-- <article class="card map-card">
+        <div class="card__header">
+          <p class="card__eyebrow">Localisation</p>
+        </div>
+        <div class="map-embed" v-if="mapboxStaticUrl">
+          <img :src="mapboxStaticUrl" alt="Bordeaux sur la carte" loading="lazy" />
+        </div>
+        <p v-else class="muted project__empty">Token Mapbox manquant ou invalide.</p>
+      </article> -->
+
+      <!-- <article class="card cert-card">
+        <p class="card__eyebrow">Certifications</p>
+        <ul class="list">
+          <li v-for="item in certifications" :key="item.label">
+            <span>{{ item.label }}</span>
+            <span class="muted">{{ item.value }}</span>
+          </li>
+        </ul>
+      </article> -->
+    </section>
+
+    <section class="all-projects">
+      <button type="button" class="pill-link" @click="openProjectsModal" v-if="githubHasRepos && !githubError">
+        Tous les projets
+      </button>
     </section>
 
     <teleport to="body">
@@ -337,283 +336,428 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .page {
-  max-width: var(--max-width);
+  max-width: 1140px;
   margin: 0 auto;
-  padding: 1.8rem 1.1rem 2.2rem;
+  padding: 2.2rem 1.4rem 2.8rem;
   position: relative;
 }
 
-.page::after {
-  content: '';
-  position: absolute;
-  inset: 8% 3%;
-  border-radius: 32px;
-  background: radial-gradient(circle at 10% 10%, rgba(140, 230, 255, 0.12), transparent 24%),
-    radial-gradient(circle at 90% 0%, rgba(137, 232, 200, 0.12), transparent 26%),
-    linear-gradient(120deg, rgba(255, 255, 255, 0.02), transparent 30%);
-  filter: blur(12px);
-  z-index: -1;
-  opacity: 0.9;
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.4rem;
+  gap: 1rem;
 }
 
-.masthead {
+.topbar_brand {
   display: flex;
   gap: 1rem;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
 }
 
-.masthead__eyebrow {
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-size: 0.78rem;
-  margin: 0 0 0.4rem;
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text);
 }
 
-.masthead h1 {
-  margin: 0;
-  font-size: clamp(2.1rem, 2.4vw + 1.2rem, 3rem);
-  letter-spacing: -0.03em;
+.brand__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f3c04d;
+  box-shadow: 0 0 0 8px rgba(243, 192, 77, 0.2);
 }
 
-.masthead__subtitle {
-  color: var(--muted);
-  max-width: 56ch;
-  line-height: 1.6;
-  margin: 0.4rem 0 0;
+.brand__dot__red {
+  background: #ff5e5e;
+}
+
+.brand__name {
   font-size: 1rem;
 }
 
-:global(.masthead__badge) {
+.brand__logo {
+  width: 30px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.topbar__links {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topbar__links a {
+  color: var(--muted);
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.3rem 0.2rem;
+  border-bottom: 2px solid transparent;
+  transition: color 120ms ease, border-color 160ms ease;
+}
+
+.topbar__links a:hover {
+  color: var(--text);
+  border-color: #cfd5df;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+  gap: 1.1rem;
+  align-items: stretch;
+  margin-bottom: 1.2rem;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 1.35rem;
+  border-radius: 22px;
+  background: #f7f8fb;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+}
+
+.hero-card {
+  background: linear-gradient(135deg, #f8e7b3, #e3f1ff);
+}
+
+.hero-card__eyebrow {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: #555a66;
+  margin: 0;
+}
+
+.hero-card__title {
+  margin: 0.1rem 0 0.2rem;
+  font-size: clamp(2.1rem, 2vw + 1.4rem, 3rem);
+  letter-spacing: -0.02em;
+  color: #131722;
+}
+
+.hero-card__lede {
+  margin: 0.35rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 50ch;
+  color: #333947;
+}
+
+.hero-card__meta {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.hero-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.7rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
-  padding: 0.65rem 0.9rem;
-  border-radius: 999px;
-  min-width: 230px;
-  height: 52px;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
-}
-
-:global(.masthead__badge--icon-only) {
-  min-width: 0;
-  padding: 0.5rem 0.65rem;
-  gap: 0.5rem;
-  height: 52px;
   justify-content: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.15rem;
+  border-radius: 999px;
+  border: none;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 140ms ease, box-shadow 140ms ease;
 }
 
-:global(.masthead__badge--social) {
-  min-width: 0;
-  padding: 0.6rem 0.85rem;
-  height: 52px;
+.btn--primary {
+  background: #0f0f11;
+  color: #fdfdfd;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
-:global(.masthead__badge--hover-reveal) {
-  min-width: 0;
-  width: auto;
-  padding-right: 0.65rem;
-  gap: 0;
-  transition: padding 750ms ease, border-color 750ms ease, gap 750ms ease;
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
 }
 
-:global(.masthead__badge--hover-reveal .masthead__texts) {
-  max-width: 0;
-  opacity: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: max-width 280ms ease, opacity 280ms ease;
+.social-buttons {
+  display: inline-flex;
+  gap: 0.5rem;
 }
 
-:global(.masthead__badge--hover-reveal:hover),
-:global(.masthead__badge--hover-reveal:focus-within) {
-  border-color: rgba(140, 230, 255, 0.4);
-  padding-right: 1.4rem;
-  gap: 0.45rem;
-}
-
-:global(.masthead__badge--hover-reveal:hover .masthead__texts),
-:global(.masthead__badge--hover-reveal:focus-within .masthead__texts) {
-  max-width: 200px;
-  opacity: 1;
-}
-
-
-:global(.masthead__icon-github) {
-  width: 22px;
-  height: 22px;
-  fill: currentColor;
-  display: block;
-}
-
-:global(.masthead__icon-user) {
-  width: 22px;
-  height: 22px;
-  fill: currentColor;
-  display: block;
-}
-
-:global(.masthead__texts) {
-  display: grid;
-  gap: 0.15rem;
-}
-
-:global(.masthead__dot) {
-  width: 10px;
-  height: 10px;
+.social-buttons__item {
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 8px rgba(140, 230, 255, 0.1);
-}
-
-:global(.masthead__badge-title) {
-  margin: 0;
-  font-weight: 600;
-}
-
-:global(.masthead__badge-copy) {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-.grid {
+  border: 1px solid #d8dde6;
+  background: #fff;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--grid-gap);
-  align-items: start;
+  place-items: center;
+  color: #1b1f2b;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.social-buttons__item:hover {
+  transform: translateY(-2px);
+  border-color: #c0c7d6;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.social-buttons__icon {
+  width: 18px;
+  height: 18px;
 }
 
 .photo-card {
-  position: relative;
-  height: 100%;
-  min-height: 340px;
-  width: 100%;
-  background: radial-gradient(circle at 30% 20%, rgba(140, 230, 255, 0.2), transparent 32%),
-    radial-gradient(circle at 70% 70%, rgba(137, 232, 200, 0.18), transparent 30%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  padding: 0;
+  overflow: hidden;
+  background: #fff6e3;
+  align-self: start;
 }
 
-.photo-img {
-  position: absolute;
-  inset: 0;
+.photo-card img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 300px;
   object-fit: cover;
   border-radius: inherit;
-  filter: saturate(1.05) contrast(1.02);
+  display: block;
 }
 
-.photo-tile,
-.location-tile {
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.all-projects {
+  margin-top: 1.8rem;
+  text-align: center;
+}
+
+.tech-marquee {
+  background: linear-gradient(135deg, #e6f1ff 0%, #fff4e5 100%);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.tech-marquee__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.tech-marquee__hint {
+  margin: 0;
+  color: #3e4554;
+  font-weight: 700;
+}
+
+.tech-marquee__viewport {
+  position: relative;
+  overflow: hidden;
+  margin-top: 0.3rem;
+  padding: 0.25rem 0;
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+.tech-marquee__track {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  animation: marquee 60s linear infinite;
+  will-change: transform;
+  min-width: max-content;
+}
+
+.tech-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e1e4ec;
+  flex-shrink: 0;
+  min-width: 150px;
+}
+
+.tech-chip__logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
+}
+
+.tech-chip__label {
+  font-weight: 700;
+  color: #1d2330;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.card__eyebrow {
+  margin: 0;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  color: #7a8290;
+}
+
+.card__title {
+  margin: 0.1rem 0 0.2rem;
+  font-size: 1.3rem;
+  color: #121826;
+}
+
+.card__desc {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: auto;
+}
+
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.project-card {
+  background: var(--card-accent, #f7f8fb);
+}
+
+.card--placeholder {
+  background: #f7f8fb;
+}
+
+.chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #dfe4ed;
+  font-weight: 600;
+  color: #1d2330;
+}
+
+.pill-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid #d8dde6;
+  background: #ffffff;
+  color: #101623;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.pill-link:hover {
+  transform: translateY(-2px);
+  border-color: #cbd2de;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.map-embed {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.map-embed img {
   width: 100%;
-  min-width: 280px;
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid #d8dde6;
+  box-shadow: 0 16px 38px rgba(17, 24, 39, 0.12);
 }
 
 .muted {
-  color: var(--muted);
+  color: #5c6576;
 }
 
 .list {
   display: grid;
-  gap: 0.55rem;
-  margin-top: 0.35rem;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .list li {
   display: flex;
   justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.65rem 0.7rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.bullet-list {
-  display: grid;
+  align-items: center;
   gap: 0.6rem;
-  margin: 0.2rem 0 0;
+  padding: 0.65rem 0.8rem;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #e1e4ec;
 }
 
-.bullet-list li {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.55rem;
-  align-items: start;
-  padding: 0.6rem 0.65rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
-  line-height: 1.5;
-}
-
-.bullet-list li::before {
-  content: '•';
-  color: var(--accent);
-  font-weight: 700;
-}
-
-:deep(.masthead__social) {
-  display: inline-flex;
-  gap: 0.35rem;
-  align-items: center;
-  font-size: 0.95rem;
-}
-
-:deep(.masthead__icon-btn) {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: none;
-  background: none;
-  color: var(--text);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  line-height: 1;
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  box-shadow: none;
-  transition: color 120ms ease;
-}
-
-:deep(.masthead__icon-btn:hover) {
-  color: var(--accent);
-}
-
-:deep(.masthead__social-icon) {
-  width: 18px;
-  height: 18px;
-  display: block;
-}
-
-.skills-tile {
-  display: flex;
-  flex-direction: column;
+.skills-card {
+  gap: 1rem;
 }
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.9rem;
 }
 
 .skills-group {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 0.75rem 0.85rem;
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #e1e4ec;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 0.85rem 0.9rem;
+  display: grid;
+  gap: 0.5rem;
 }
 
 .skills-group__title {
-  margin: 0 0 0.45rem;
+  margin: 0;
   font-weight: 700;
-  letter-spacing: 0.01em;
 }
 
 .pill-grid {
@@ -623,166 +767,52 @@ onBeforeUnmount(() => {
 }
 
 .pill {
-  padding: 0.4rem 0.7rem;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text);
-  font-size: 0.95rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 12px;
+  background: #f2f4f8;
+  color: #1d2330;
+  border: 1px solid #e1e4ec;
 }
 
-.map-embed {
-  display: grid;
-  gap: 0.55rem;
-  min-height: 0;
-  height: auto;
+.card--wide {
+  grid-column: span 2;
 }
 
-.map-embed img {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 10 / 4;
-  object-fit: cover;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  display: block;
-}
-
-.layout-school .list {
-  height: 100%;
-  display: grid;
-  gap: 0.6rem;
-}
-
-.mosaic {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  gap: var(--grid-gap);
-  align-items: start;
-}
-
-.mosaic__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-areas:
-    'photo loc'
-    'photo school'
-    'projects current';
-  gap: var(--grid-gap);
-}
-
-.mosaic__photo {
-  grid-area: photo;
-}
-
-.mosaic__loc {
-  grid-area: loc;
-}
-
-.mosaic__school {
-  grid-area: school;
-}
-
-.mosaic__skills {
-  align-self: start;
-  max-height: 700px;
-  overflow: auto;
-}
-
-.mosaic__projects {
-  grid-area: projects;
-}
-
-.mosaic__current {
-  grid-area: current;
-}
-
-@media (max-width: 960px) {
-  .mosaic {
-    grid-template-columns: 1fr;
-  }
-
-  .mosaic__grid {
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    grid-template-areas: none;
-  }
-
-  .mosaic__photo,
-  .mosaic__loc,
-  .mosaic__school,
-  .mosaic__projects,
-  .mosaic__current {
-    grid-area: auto;
-  }
-
-  .mosaic__skills {
-    max-height: none;
-  }
-}
-
-.projects__see-all {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.1rem;
-  border: none;
-  background: none;
-  color: var(--accent);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  cursor: pointer;
-  transition: color 140ms ease, transform 140ms ease;
-}
-
-.projects__see-all::after {
-  content: '↗';
-  font-size: 0.92rem;
-}
-
-.projects__see-all:hover {
-  color: #9be3ff;
-  transform: translateY(-1px);
-}
-
-.projects {
-  display: grid;
-  gap: 0.55rem;
-  margin-top: 0.35rem;
-}
-
-.projects li {
-  list-style: none;
-  padding: 0;
+.project__empty {
+  padding: 0.65rem 0.7rem;
+  border-radius: 16px;
+  border: 1px dashed #d8dde6;
+  background: #ffffff;
 }
 
 .project__link {
   display: flex;
   justify-content: space-between;
   gap: 0.7rem;
-  padding: 0.55rem 0.7rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
+  padding: 0.8rem 0.9rem;
+  border-radius: 14px;
+  border: 1px solid #e1e4ec;
+  background: #ffffff;
   align-items: center;
   color: inherit;
   text-decoration: none;
-  transition: border-color 160ms ease, transform 160ms ease;
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
 .project__link:hover {
-  border-color: rgba(140, 230, 255, 0.4);
+  border-color: #cbd2de;
   transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
 }
 
 .project__title {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .project__detail {
   margin-top: 0.1rem;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
 }
 
 .project__meta {
@@ -790,7 +820,7 @@ onBeforeUnmount(() => {
   gap: 0.6rem;
   align-items: center;
   margin: 0.3rem 0 0;
-  color: var(--muted);
+  color: #5c6576;
   font-size: 0.9rem;
 }
 
@@ -801,41 +831,21 @@ onBeforeUnmount(() => {
 }
 
 .project__meta a {
-  color: var(--text);
+  color: #111827;
   text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
 }
 
 .project__meta a:hover {
-  color: var(--accent);
+  color: #2563eb;
 }
 
 .project__status {
   padding: 0.35rem 0.6rem;
   border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.06);
-  font-size: 0.85rem;
-  color: var(--text);
-}
-
-.project__empty {
-  padding: 0.65rem 0.7rem;
-  border-radius: var(--radius);
-  border: 1px dashed var(--border);
-  background: rgba(255, 255, 255, 0.02);
-  color: var(--muted);
-  font-style: italic;
-}
-
-.project__link--modal {
-  align-items: flex-start;
-}
-
-.project__link--modal .project__status {
-  margin-top: 0.15rem;
+  border: 1px solid #e1e4ec;
+  background: #f7f8fb;
+  font-size: 0.88rem;
+  color: #1d2330;
 }
 
 .projects-modal {
@@ -849,20 +859,20 @@ onBeforeUnmount(() => {
 .projects-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(2, 6, 15, 0.9);
-  backdrop-filter: blur(5px);
+  background: rgba(17, 24, 39, 0.32);
+  backdrop-filter: blur(4px);
 }
 
 .projects-modal__dialog {
   position: relative;
   z-index: 1;
-  width: min(92vw, 920px);
+  width: min(92vw, 960px);
   max-height: 82vh;
-  padding: 1.35rem 1.5rem;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  background: linear-gradient(165deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.08));
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  padding: 1.4rem 1.5rem;
+  border-radius: 20px;
+  border: 1px solid #e1e4ec;
+  background: #fdfdfd;
+  box-shadow: 0 32px 90px rgba(15, 23, 42, 0.25);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -881,7 +891,7 @@ onBeforeUnmount(() => {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-size: 0.82rem;
-  color: var(--muted);
+  color: #7a8290;
 }
 
 .projects-modal__title {
@@ -891,25 +901,26 @@ onBeforeUnmount(() => {
 
 .projects-modal__meta {
   margin: 0.25rem 0 0;
-  color: var(--muted);
+  color: #5c6576;
 }
 
 .projects-modal__close {
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text);
+  border: 1px solid #e1e4ec;
+  background: #ffffff;
+  color: #111827;
   width: 38px;
   height: 38px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: border-color 140ms ease, transform 140ms ease;
+  transition: border-color 140ms ease, transform 140ms ease, box-shadow 140ms ease;
 }
 
 .projects-modal__close:hover {
-  border-color: rgba(140, 230, 255, 0.5);
+  border-color: #cbd2de;
   transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
 }
 
 .projects-modal__list {
@@ -917,7 +928,7 @@ onBeforeUnmount(() => {
   margin: 0.5rem 0 0;
   padding: 0;
   display: grid;
-  gap: 0.6rem;
+  gap: 0.7rem;
   overflow: auto;
   flex: 1;
   min-height: 0;
@@ -938,17 +949,6 @@ onBeforeUnmount(() => {
   overflow: hidden;
 }
 
-.key-line {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.6rem;
-  padding: 0.55rem 0.65rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
-  font-size: 0.95rem;
-}
-
 :global(.sr-only) {
   position: absolute;
   width: 1px;
@@ -960,36 +960,42 @@ onBeforeUnmount(() => {
   border: 0;
 }
 
-@media (max-width: 900px) {
-  .masthead {
-    flex-direction: column;
+@media (max-width: 960px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
   }
 
-  :global(.masthead__badge) {
-    width: fit-content;
+  .card--wide {
+    grid-column: span 1;
   }
 }
 
 @media (max-width: 640px) {
-  .page {
-    padding: 2.4rem 1rem 3rem;
-  }
-
-  .masthead__subtitle {
-    font-size: 0.96rem;
-  }
-
-  .list li,
-  .key-line {
+  .topbar {
     flex-direction: column;
     align-items: flex-start;
   }
-}
 
-@media (min-width: 960px) {
+  .topbar__links {
+    width: 100%;
+  }
+
   .page {
-    max-height: 100vh;
-    overflow: hidden;
+    padding: 2rem 1rem 2.6rem;
+  }
+
+  .card__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tech-chip {
+    min-width: 120px;
+    padding: 0.45rem 0.65rem;
+  }
+
+  .tech-marquee__hint {
+    font-size: 0.95rem;
   }
 }
 </style>
