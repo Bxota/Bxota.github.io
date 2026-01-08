@@ -145,11 +145,6 @@ onBeforeUnmount(() => {
           <img class="brand__logo" src="/yunohit.png" alt="logo Yunohit" loading="lazy" />
         </a>
       </div>
-      <ul class="topbar__links">
-        <li><a href="#work">Projets</a></li>
-        <li><a href="#skills">Compétences</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
     </nav>
 
     <section class="hero-grid">
@@ -337,6 +332,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .page {
   max-width: 1140px;
+  max-height: 100vh;
   margin: 0 auto;
   padding: 2.2rem 1.4rem 2.8rem;
   position: relative;
@@ -384,29 +380,6 @@ onBeforeUnmount(() => {
   width: 30px;
   height: auto;
   border-radius: 4px;
-}
-
-.topbar__links {
-  display: flex;
-  gap: 1.2rem;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.topbar__links a {
-  color: var(--muted);
-  font-weight: 700;
-  text-decoration: none;
-  padding: 0.3rem 0.2rem;
-  border-bottom: 2px solid transparent;
-  transition: color 120ms ease, border-color 160ms ease;
-}
-
-.topbar__links a:hover {
-  color: var(--text);
-  border-color: #cfd5df;
 }
 
 .hero-grid {
@@ -802,7 +775,7 @@ onBeforeUnmount(() => {
 .project__link:hover {
   border-color: #cbd2de;
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 10px 0px rgba(15, 23, 42, 0.12);
 }
 
 .project__title {
@@ -926,7 +899,7 @@ onBeforeUnmount(() => {
 .projects-modal__list {
   list-style: none;
   margin: 0.5rem 0 0;
-  padding: 0;
+  padding: 0.5rem 0 0;
   display: grid;
   gap: 0.7rem;
   overflow: auto;
