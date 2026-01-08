@@ -44,12 +44,12 @@ export type ProfileOverview = {
 }
 
 const API_ROOT = 'https://api.github.com'
-const token = import.meta.env.VITE_GITHUB_TOKEN
+// const token = import.meta.env.VITE_GITHUB_TOKEN
 const FALLBACK_GITHUB_USERNAME = 'Bxota'
 
 const baseHeaders: HeadersInit = {
-  Accept: 'application/vnd.github+json',
-  ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  // Accept: 'application/vnd.github+json',
+  // ...(token ? { Authorization: `Bearer ${token}` } : {}),
 }
 
 function resolveUsername(username?: string) {
