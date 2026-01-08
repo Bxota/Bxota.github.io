@@ -22,12 +22,12 @@ jobs:
         run: npm ci
 
       - name: Generate static files
-        run: npm run generate
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: .output/public
+          folder: .dist
           token: ${{ secrets.PAT_GITHUB }}
           clean: true
