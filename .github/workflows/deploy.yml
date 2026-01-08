@@ -28,6 +28,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: .dist
+          folder: dist
           token: ${{ secrets.PAT_GITHUB }}
           clean: true
