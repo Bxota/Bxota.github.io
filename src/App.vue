@@ -6,6 +6,7 @@ type SocialIcon = 'linkedin' | 'github' | 'email' | 'phone'
 type SocialLink = { label: string; href: string; icon: SocialIcon; copy?: string; target?: string }
 type Certification = { label: string; value: string }
 type TechLogo = { name: string; logo: string }
+type TechMarqueeTrack = { items: TechLogo[]; duration: number }
 
 const phoneNumber = '+336953122449'
 const socialLinks: SocialLink[] = [
@@ -44,26 +45,55 @@ const certifications: Certification[] = [
 
 const projectColors = ['#ebe8ff', '#e5f5ff', '#ffe9d8', '#e7f5e0']
 
-const techLogos: TechLogo[] = [
-  { name: 'TypeScript', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
-  { name: 'Vue.js', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg' },
+const techLogosLangages: TechLogo[] = [
+  { name: 'VB', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visualbasic/visualbasic-original.svg' },
+  { name: 'C#', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg' },
+  { name: 'C', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg' },
+  { name: 'C++', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg' },
   { name: 'Go', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg' },
   { name: 'Python', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
   { name: 'PHP', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg' },
-  { name: 'C#', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg' },
+  { name: 'TypeScript', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
   { name: 'Kotlin', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg' },
   { name: 'Swift', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg' },
+]
+
+const techLogosFrameworks: TechLogo[] = [
+  { name: 'Vue.js', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg' },
   { name: 'Django', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg' },
   { name: 'Symfony', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/symfony/symfony-original.svg' },
   { name: 'Electron', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg' },
   { name: 'Bootstrap', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg' },
+]
+
+const techLogosOutils: TechLogo[] = [
   { name: 'Docker', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg' },
   { name: 'PostgreSQL', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
   { name: 'AWS', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg' },
   { name: 'Git', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
+  { name: 'Jira', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original-wordmark.svg' },
 ]
 
-const techMarqueeItems = computed(() => [...techLogos, ...techLogos])
+const MIN_CHIPS_PER_TRACK = 15
+
+const buildMarqueeTrack = (logos: TechLogo[]): TechMarqueeTrack => {
+  const base = [...logos]
+  while (base.length < MIN_CHIPS_PER_TRACK) {
+    base.push(...logos)
+  }
+
+  const doubled = [...base, ...base]
+  return {
+    items: doubled,
+    duration: Math.max(10, base.length * 3),
+  }
+}
+
+const techMarqueeTracks = computed<TechMarqueeTrack[]>(() => [
+  buildMarqueeTrack(techLogosLangages),
+  buildMarqueeTrack(techLogosFrameworks),
+  buildMarqueeTrack(techLogosOutils),
+])
 
 const githubProfile = ref<ProfileOverview | null>(null)
 const githubError = ref(false)
@@ -190,11 +220,15 @@ onBeforeUnmount(() => {
     <section class="tech-marquee card">
       <div class="tech-marquee__header">
         <p class="card__eyebrow">Compétences</p>
-        <p class="tech-marquee__hint">Ils m'ont fait confiance</p>
       </div>
       <div class="tech-marquee__viewport">
-        <div class="tech-marquee__track">
-          <div v-for="(tech, index) in techMarqueeItems" :key="tech.name + index" class="tech-chip">
+        <div
+          v-for="(track, trackIndex) in techMarqueeTracks"
+          :key="trackIndex"
+          class="tech-marquee__track"
+          :style="{ '--marquee-duration': `${track.duration}s` }"
+        >
+          <div v-for="(tech, index) in track.items" :key="tech.name + index" class="tech-chip">
             <img class="tech-chip__logo" :src="tech.logo" :alt="tech.name" loading="lazy" />
             <span class="tech-chip__label">{{ tech.name }}</span>
           </div>
@@ -332,7 +366,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .page {
   max-width: 1140px;
-  max-height: 100vh;
+  min-height: 100vh;
   margin: 0 auto;
   padding: 2.2rem 1.4rem 2.8rem;
   position: relative;
@@ -546,6 +580,8 @@ onBeforeUnmount(() => {
 
 .tech-marquee__viewport {
   position: relative;
+  display: grid;
+  gap: 0.55rem;
   overflow: hidden;
   margin-top: 0.3rem;
   padding: 0.25rem 0;
@@ -554,12 +590,16 @@ onBeforeUnmount(() => {
 }
 
 .tech-marquee__track {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0.65rem;
-  animation: marquee 60s linear infinite;
+  animation: marquee var(--marquee-duration, 60s) linear infinite;
   will-change: transform;
   min-width: max-content;
+}
+
+.tech-marquee__track:nth-of-type(odd) {
+  animation-direction: reverse;
 }
 
 .tech-chip {
@@ -571,7 +611,7 @@ onBeforeUnmount(() => {
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid #e1e4ec;
   flex-shrink: 0;
-  min-width: 150px;
+  min-width: auto;
 }
 
 .tech-chip__logo {

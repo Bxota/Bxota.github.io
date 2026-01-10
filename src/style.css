@@ -36,13 +36,8 @@ body {
     radial-gradient(circle at 10% 12%, rgba(255, 255, 255, 0.7), transparent 28%),
     radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.8), transparent 26%),
     linear-gradient(180deg, #f2f4f7 0%, #e9ecf1 40%, #e6e9ee 100%);
-  overflow: hidden;
-}
-
-@media (max-width: 1024px) {
-  body {
-    overflow: auto;
-  }
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #app {
