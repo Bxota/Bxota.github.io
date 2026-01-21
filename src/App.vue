@@ -169,6 +169,10 @@ onBeforeUnmount(() => {
           <span class="brand__dot" aria-hidden="true"></span>
           <span class="brand__name">Thomas Leterme</span>
         </div>
+        <a href="/CV.pdf" class="brand" download="CV-Thomas-Leterme.pdf">
+          <span class="brand__dot brand__dot__blue" aria-hidden="true"></span>
+          <span class="brand__name">Curriculum Vitae</span>
+        </a>
         <a href="https://yunohit.com" class="brand" target="_blank" rel="noreferrer">
           <span class="brand__dot brand__dot__red" aria-hidden="true"></span>
           <span class="brand__name">Alternant chez Yunohit</span>
@@ -404,6 +408,10 @@ onBeforeUnmount(() => {
 
 .brand__dot__red {
   background: #ff5e5e;
+}
+
+.brand__dot__blue {
+  background: #4da6ff;
 }
 
 .brand__name {
