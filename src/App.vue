@@ -92,7 +92,7 @@ const buildMarqueeTrack = (logos: TechLogo[]): TechMarqueeTrack => {
   const doubled = [...base, ...base]
   return {
     items: doubled,
-    duration: Math.max(10, base.length * 3),
+    duration: Math.max(10, base.length * 4),
   }
 }
 
@@ -180,10 +180,20 @@ onBeforeUnmount(() => {
           <span class="brand__dot brand__dot__blue" aria-hidden="true"></span>
           <span class="brand__name">Curriculum Vitae</span>
         </a>
-        <a href="https://yunohit.com" class="brand" target="_blank" rel="noreferrer">
+        <a
+          href="https://yunohit.com"
+          class="brand"
+          target="_blank"
+          rel="noreferrer"
+        >
           <span class="brand__dot brand__dot__red" aria-hidden="true"></span>
           <span class="brand__name">Alternant chez Yunohit</span>
-          <img class="brand__logo" src="/yunohit.png" alt="logo Yunohit" loading="lazy" />
+          <img
+            class="brand__logo"
+            src="/yunohit.png"
+            alt="logo Yunohit"
+            loading="lazy"
+          />
         </a>
       </div>
     </nav>
@@ -198,13 +208,21 @@ onBeforeUnmount(() => {
         <div class="hero-card__meta">
           <template v-if="githubProfile">
             <p class="muted">GitHub · @{{ githubProfile.username }}</p>
-            <p class="muted">{{ githubProfile.followers }} followers · {{ githubProfile.publicRepos }} repos publics</p>
+            <p class="muted italic">
+              {{ githubProfile.followers }} followers ·
+              {{ githubProfile.publicRepos }} repos publics
+            </p>
           </template>
           <p v-else-if="githubError" class="muted">GitHub non disponible</p>
           <p v-else class="muted">Chargement du profil GitHub…</p>
         </div>
         <div class="hero-card__actions">
-          <a id="contact" class="btn btn--primary" href="mailto:thomas.pro.leterme@gmail.com">Me contacter</a>
+          <a
+            id="contact"
+            class="btn btn--primary"
+            href="mailto:thomas.pro.leterme@gmail.com"
+            >Me contacter</a
+          >
           <div class="social-buttons">
             <a
               v-for="link in socialLinks"
@@ -214,7 +232,12 @@ onBeforeUnmount(() => {
               :target="link.target || undefined"
               rel="noreferrer"
             >
-              <svg class="social-buttons__icon" :viewBox="iconViewBox[link.icon]" role="img" aria-hidden="true">
+              <svg
+                class="social-buttons__icon"
+                :viewBox="iconViewBox[link.icon]"
+                role="img"
+                aria-hidden="true"
+              >
                 <path :d="iconPaths[link.icon]" fill="currentColor" />
               </svg>
               <span class="sr-only">{{ link.label }}</span>
@@ -224,7 +247,11 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="card photo-card">
-        <img src="/thomas.jpeg" alt="Portrait de Thomas Leterme" loading="lazy" />
+        <img
+          src="/thomas.jpeg"
+          alt="Portrait de Thomas Leterme"
+          loading="lazy"
+        />
       </div>
     </section>
 
@@ -239,8 +266,17 @@ onBeforeUnmount(() => {
           class="tech-marquee__track"
           :style="{ '--marquee-duration': `${track.duration}s` }"
         >
-          <div v-for="(tech, index) in track.items" :key="tech.name + index" class="tech-chip">
-            <img class="tech-chip__logo" :src="tech.logo" :alt="tech.name" loading="lazy" />
+          <div
+            v-for="(tech, index) in track.items"
+            :key="tech.name + index"
+            class="tech-chip"
+          >
+            <img
+              class="tech-chip__logo"
+              :src="tech.logo"
+              :alt="tech.name"
+              loading="lazy"
+            />
             <span class="tech-chip__label">{{ tech.name }}</span>
           </div>
         </div>
@@ -252,18 +288,38 @@ onBeforeUnmount(() => {
         v-for="(repo, index) in githubReposTop3"
         :key="repo.id"
         class="card project-card"
-        :style="{ '--card-accent': projectColors[index % projectColors.length] }"
+        :style="{
+          '--card-accent-rgb':
+            projectColors[index % projectColors.length]
+              .replace('#', '')
+              .match(/.{2}/g)
+              ?.map((hex) => parseInt(hex, 16))
+              .join(', ') || '247, 248, 251',
+          '--card-border': projectColors[index % projectColors.length],
+        }"
       >
         <p class="card__eyebrow">Projet GitHub</p>
         <h3 class="card__title">{{ repo.name }}</h3>
-        <p class="muted card__desc">{{ repo.description || 'Aucune description pour le moment.' }}</p>
+        <p class="muted card__desc">
+          {{ repo.description || "Aucune description pour le moment." }}
+        </p>
         <div class="card__footer">
           <div class="chips">
             <span v-if="repo.language" class="chip">{{ repo.language }}</span>
-            <span class="chip">★ {{ repo.stars }}</span>
+            <span v-if="repo.stars > 1" class="chip">★ {{ repo.stars }}</span>
           </div>
-          <a class="pill-link" :href="repo.url" target="_blank" rel="noreferrer">
-            <svg class="social-buttons__icon" :viewBox="iconViewBox.github" role="img" aria-hidden="true">
+          <a
+            class="pill-link"
+            :href="repo.url"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <svg
+              class="social-buttons__icon"
+              :viewBox="iconViewBox.github"
+              role="img"
+              aria-hidden="true"
+            >
               <path :d="iconPaths.github" fill="currentColor" />
             </svg>
           </a>
@@ -276,13 +332,19 @@ onBeforeUnmount(() => {
         <p class="muted">GitHub n'est pas disponible pour le moment.</p>
       </article>
 
-      <article v-else-if="!githubProfile" class="card project-card card--placeholder">
+      <article
+        v-else-if="!githubProfile"
+        class="card project-card card--placeholder"
+      >
         <p class="card__eyebrow">GitHub</p>
         <h3 class="card__title">Chargement...</h3>
         <p class="muted">Je récupère les projets publics.</p>
       </article>
 
-      <article v-else-if="!githubReposTop3.length" class="card project-card card--placeholder">
+      <article
+        v-else-if="!githubReposTop3.length"
+        class="card project-card card--placeholder"
+      >
         <p class="card__eyebrow">GitHub</p>
         <h3 class="card__title">Aucun projet public trouvé</h3>
         <p class="muted">Dès qu'un dépôt sera disponible, il apparaîtra ici.</p>
@@ -310,7 +372,12 @@ onBeforeUnmount(() => {
     </section>
 
     <section class="all-projects">
-      <button type="button" class="pill-link" @click="openProjectsModal" v-if="githubHasRepos && !githubError">
+      <button
+        type="button"
+        class="pill-link"
+        @click="openProjectsModal"
+        v-if="githubHasRepos && !githubError"
+      >
         Tous les projets
       </button>
     </section>
@@ -326,10 +393,13 @@ onBeforeUnmount(() => {
         >
           <header class="projects-modal__header">
             <div>
-              <p class="projects-modal__eyebrow">Mes projets</p>
-              <h2 id="projects-modal-title" class="projects-modal__title">Tous mes dépôts GitHub</h2>
+              <!-- <p class="projects-modal__eyebrow">Mes projets</p> -->
+              <h2 id="projects-modal-title" class="projects-modal__title">
+                Tous mes dépôts GitHub
+              </h2>
               <p v-if="githubProfile" class="projects-modal__meta">
-                {{ githubReposAll.length }} projets publics · {{ githubProfile.followers }} followers
+                {{ githubReposAll.length }} projets publics ·
+                {{ githubProfile.followers }} followers
               </p>
             </div>
             <button
@@ -344,15 +414,38 @@ onBeforeUnmount(() => {
 
           <ul class="projects-modal__list">
             <li v-for="repo in githubReposAll" :key="repo.id">
-              <a class="project__link project__link--modal" :href="repo.url" target="_blank" rel="noreferrer">
+              <a
+                class="project__link project__link--modal"
+                :href="repo.url"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <div>
                   <p class="project__title">{{ repo.name }}</p>
                   <p class="muted project__detail">
-                    {{ repo.description || 'Aucune description pour le moment.' }}
+                    {{
+                      repo.description || "Aucune description pour le moment."
+                    }}
                   </p>
                   <p class="project__meta">
-                    <span v-if="repo.language">{{ repo.language }}</span>
-                    <span>★ {{ repo.stars }}</span>
+                    <span v-if="repo.language" class="project__language">{{
+                      repo.language
+                    }}</span>
+                    <span
+                      v-if="
+                        repo.topics &&
+                        repo.topics.length > 0 &&
+                        repo.topics.some((topic) => topic !== 'portfolio')
+                      "
+                      class="project__topics"
+                      >{{
+                        repo.topics
+                          .filter((topic) => topic !== "portfolio")
+                          .map((topic) => `#${topic}`)
+                          .join(" - ")
+                      }}</span
+                    >
+                    <span v-if="repo.stars > 1">★ {{ repo.stars }}</span>
                     <a
                       v-if="repo.homepage"
                       class="project__meta-link"
@@ -364,7 +457,7 @@ onBeforeUnmount(() => {
                     </a>
                   </p>
                 </div>
-                <span class="project__status">GitHub</span>
+                <!-- <span class="project__status">GitHub</span> -->
               </a>
             </li>
           </ul>
@@ -383,6 +476,11 @@ onBeforeUnmount(() => {
   position: relative;
 }
 
+.italic {
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -394,6 +492,7 @@ onBeforeUnmount(() => {
 .topbar_brand {
   display: flex;
   gap: 1rem;
+  margin-left: 0.5rem;
 }
 
 .brand {
@@ -415,14 +514,17 @@ onBeforeUnmount(() => {
 
 .brand__dot__red {
   background: #ff5e5e;
+  box-shadow: 0 0 0 8px rgba(255, 94, 94, 0.15);
 }
 
 .brand__dot__blue {
   background: #4da6ff;
+  box-shadow: 0 0 0 8px rgba(77, 166, 255, 0.15);
 }
 
 .brand__name {
   font-size: 1rem;
+  margin-left: 0.2rem;
 }
 
 .brand__logo {
@@ -446,14 +548,15 @@ onBeforeUnmount(() => {
   gap: 0.8rem;
   width: 100%;
   padding: 1.35rem;
-  border-radius: 22px;
+  border-radius: 18px;
   background: #f7f8fb;
   border: 1px solid var(--border);
-  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 2.5px 10px rgba(15, 23, 42, 0.08);
 }
 
 .hero-card {
   background: linear-gradient(135deg, #f8e7b3, #e3f1ff);
+  border-radius: 14px 6px 6px 14px;
 }
 
 .hero-card__eyebrow {
@@ -509,12 +612,13 @@ onBeforeUnmount(() => {
 .btn--primary {
   background: #0f0f11;
   color: #fdfdfd;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2.5px 10px rgba(0, 0, 0, 0.3);
+  transition: all 140ms ease;
 }
 
 .btn--primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .social-buttons {
@@ -526,18 +630,19 @@ onBeforeUnmount(() => {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1px solid #d8dde6;
+  border: 1px solid #b2b9c6;
   background: #fff;
   display: grid;
   place-items: center;
   color: #1b1f2b;
-  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+  transition: transform 140ms ease, border-color 140ms ease,
+    box-shadow 140ms ease;
 }
 
 .social-buttons__item:hover {
   transform: translateY(-2px);
-  border-color: #c0c7d6;
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+  border-color: #b2b9c6;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .social-buttons__icon {
@@ -550,6 +655,7 @@ onBeforeUnmount(() => {
   overflow: hidden;
   background: #fff6e3;
   align-self: start;
+  border-radius: 6px 14px 14px 6px;
 }
 
 .photo-card img {
@@ -600,8 +706,20 @@ onBeforeUnmount(() => {
   overflow: hidden;
   margin-top: 0.3rem;
   padding: 0.25rem 0;
-  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
 }
 
 .tech-marquee__track {
@@ -615,6 +733,10 @@ onBeforeUnmount(() => {
 
 .tech-marquee__track:nth-of-type(odd) {
   animation-direction: reverse;
+}
+
+.tech-marquee__track:hover {
+  animation-play-state: paused;
 }
 
 .tech-chip {
@@ -685,7 +807,8 @@ onBeforeUnmount(() => {
 }
 
 .project-card {
-  background: var(--card-accent, #f7f8fb);
+  background: rgba(var(--card-accent-rgb, 247, 248, 251), 0.7);
+  border: 2px solid var(--card-border, #f7f8fb);
 }
 
 .card--placeholder {
@@ -719,7 +842,8 @@ onBeforeUnmount(() => {
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
-  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+  transition: transform 140ms ease, border-color 140ms ease,
+    box-shadow 140ms ease;
 }
 
 .pill-link:hover {
@@ -824,13 +948,16 @@ onBeforeUnmount(() => {
   align-items: center;
   color: inherit;
   text-decoration: none;
-  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+  transition: border-color 160ms ease, transform 160ms ease,
+    box-shadow 160ms ease;
+  padding-right: 1.2rem;
 }
 
 .project__link:hover {
   border-color: #cbd2de;
   transform: translateY(-2px);
-  box-shadow: 0 10px 0px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 2px 0px rgba(15, 23, 42, 0.12),
+    inset 0 0 2px rgba(15, 23, 42, 0.12);
 }
 
 .project__title {
@@ -881,7 +1008,6 @@ onBeforeUnmount(() => {
   inset: 0;
   display: grid;
   place-items: center;
-  z-index: 20;
 }
 
 .projects-modal__backdrop {
@@ -898,13 +1024,27 @@ onBeforeUnmount(() => {
   max-height: 82vh;
   padding: 1.4rem 1.5rem;
   border-radius: 20px;
-  border: 1px solid #e1e4ec;
+  border: 1.5px solid #e1e4ec;
   background: #fdfdfd;
-  box-shadow: 0 32px 90px rgba(15, 23, 42, 0.25);
+  box-shadow: 0 32px 90px rgba(15, 23, 42, 0.25),
+    inset 0 0 10px rgba(15, 23, 42, 0.12);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  /* cubic bezier flash */
+  animation: fadeInScale 240ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .projects-modal__header {
@@ -928,12 +1068,13 @@ onBeforeUnmount(() => {
 }
 
 .projects-modal__meta {
-  margin: 0.25rem 0 0;
+  margin: 0.5rem 0 0 0;
   color: #5c6576;
+  font-style: italic;
 }
 
 .projects-modal__close {
-  border: 1px solid #e1e4ec;
+  border: 1px solid #cbd2de;
   background: #ffffff;
   color: #111827;
   width: 38px;
@@ -942,13 +1083,15 @@ onBeforeUnmount(() => {
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: border-color 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+  padding-bottom: 0.15rem;
+  transition: border-color 140ms ease, transform 140ms ease,
+    box-shadow 140ms ease;
 }
 
 .projects-modal__close:hover {
-  border-color: #cbd2de;
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+  background: #f7f8fb;
+  box-shadow: 0 0 5px rgba(15, 23, 42, 0.12),
+    inset 0 0 2px rgba(15, 23, 42, 0.12);
 }
 
 .projects-modal__list {
@@ -975,6 +1118,22 @@ onBeforeUnmount(() => {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.project__language {
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  background: #e1e4ec;
+  color: #1d2330;
+  font-size: 0.85rem;
+  box-shadow: inset 0 2px 10px rgba(225, 228, 236, 0.5);
+}
+
+.project__topics {
+  display: inline-flex;
+  gap: 0.3rem;
+  color: #2563eb;
+  font-size: 0.85rem;
 }
 
 :global(.sr-only) {
