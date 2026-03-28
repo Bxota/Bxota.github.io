@@ -1165,6 +1165,20 @@ onBeforeUnmount(() => {
     align-items: flex-start;
   }
 
+  .topbar_brand {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-left: 0;
+  }
+
+  .brand {
+    gap: 0.45rem;
+  }
+
+  .brand__name {
+    font-size: 0.85rem;
+  }
+
   .topbar__links {
     width: 100%;
   }
