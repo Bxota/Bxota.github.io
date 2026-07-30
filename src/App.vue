@@ -1135,6 +1135,7 @@ onBeforeUnmount(() => {
 .projects-modal {
   position: fixed;
   inset: 0;
+  z-index: 1000;
   display: grid;
   place-items: center;
 }
