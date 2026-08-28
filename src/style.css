@@ -40,7 +40,25 @@ body {
   overflow-x: hidden;
 }
 
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(82, 101, 128, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(82, 101, 128, 0.12) 1px, transparent 1px);
+  background-position: center top;
+  background-size: 72px 72px;
+  opacity: 0.55;
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.82) 68%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.82) 68%, transparent 100%);
+}
+
 #app {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
 }
 
@@ -61,4 +79,13 @@ ul {
 
 ::selection {
   background: rgba(243, 192, 77, 0.35);
+}
+
+@media (max-width: 640px) {
+  body::before {
+    background-size: 64px 64px;
+    opacity: 0.26;
+    mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 46%, transparent 78%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 46%, transparent 78%);
+  }
 }

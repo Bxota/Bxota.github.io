@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import * as THREE from 'three'
 import { fetchProfileOverview, type ProfileOverview } from './services/githubApi'
 
 type SocialIcon = 'linkedin' | 'github' | 'email' | 'phone'
@@ -129,8 +128,6 @@ const githubProfile = ref<ProfileOverview | null>(null)
 const githubError = ref(false)
 const isProjectsModalOpen = ref(false)
 const bodyOverflow = ref('')
-const backgroundCanvas = ref<HTMLCanvasElement | null>(null)
-let disposeBackground: (() => void) | undefined
 
 const githubReposAll = computed(() => githubProfile.value?.repos ?? [])
 
@@ -166,82 +163,6 @@ const mapboxStaticUrl = computed(() => {
   return `https://api.mapbox.com/styles/v1/mapbox/${style}/static/pin-s+7ce7ff(${coords})/${coords},${zoom},0/${size}?access_token=${mapboxToken}`
 })
 
-const setupBackground = () => {
-  const canvas = backgroundCanvas.value
-  if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-  const scene = new THREE.Scene()
-  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100)
-  camera.position.z = 5
-
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
-
-  const particleCount = 360
-  const positions = new Float32Array(particleCount * 3)
-  for (let index = 0; index < particleCount; index += 1) {
-    const offset = index * 3
-    positions[offset] = (Math.random() - 0.5) * 10
-    positions[offset + 1] = (Math.random() - 0.5) * 7
-    positions[offset + 2] = (Math.random() - 0.5) * 4
-  }
-
-  const geometry = new THREE.BufferGeometry()
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-  const particleCanvas = document.createElement('canvas')
-  particleCanvas.width = 64
-  particleCanvas.height = 64
-  const particleContext = particleCanvas.getContext('2d')
-  if (!particleContext) return
-  const particleGradient = particleContext.createRadialGradient(32, 32, 0, 32, 32, 32)
-  particleGradient.addColorStop(0, 'rgba(255, 255, 255, 1)')
-  particleGradient.addColorStop(0.72, 'rgba(255, 255, 255, 0.96)')
-  particleGradient.addColorStop(1, 'rgba(255, 255, 255, 0)')
-  particleContext.fillStyle = particleGradient
-  particleContext.fillRect(0, 0, 64, 64)
-  const particleTexture = new THREE.CanvasTexture(particleCanvas)
-  const material = new THREE.PointsMaterial({
-    color: 0x2669c7,
-    map: particleTexture,
-    size: 0.052,
-    transparent: true,
-    opacity: 0.68,
-    sizeAttenuation: true,
-  })
-  const particles = new THREE.Points(geometry, material)
-  scene.add(particles)
-
-  const resize = () => {
-    const { innerWidth, innerHeight } = window
-    renderer.setSize(innerWidth, innerHeight, false)
-    camera.aspect = innerWidth / innerHeight
-    camera.updateProjectionMatrix()
-  }
-
-  let frameId = 0
-  const render = (time: number) => {
-    particles.rotation.y = time * 0.000085
-    particles.rotation.x = Math.sin(time * 0.00018) * 0.16
-    camera.position.x = Math.sin(time * 0.0001) * 0.22
-    camera.position.y = Math.cos(time * 0.00013) * 0.12
-    renderer.render(scene, camera)
-    frameId = window.requestAnimationFrame(render)
-  }
-
-  resize()
-  window.addEventListener('resize', resize)
-  frameId = window.requestAnimationFrame(render)
-
-  disposeBackground = () => {
-    window.cancelAnimationFrame(frameId)
-    window.removeEventListener('resize', resize)
-    geometry.dispose()
-    material.dispose()
-    particleTexture.dispose()
-    renderer.dispose()
-  }
-}
-
 watch(isProjectsModalOpen, (isOpen) => {
   if (isOpen) {
     bodyOverflow.value = document.body.style.overflow
@@ -254,7 +175,6 @@ watch(isProjectsModalOpen, (isOpen) => {
 onMounted(async () => {
   bodyOverflow.value = document.body.style.overflow
   window.addEventListener('keydown', handleKeydown)
-  setupBackground()
 
   try {
     githubProfile.value = await fetchProfileOverview()
@@ -266,14 +186,12 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeydown)
-  disposeBackground?.()
   document.body.style.overflow = bodyOverflow.value
 })
 </script>
 
 <template>
   <div class="page">
-    <canvas ref="backgroundCanvas" class="background-canvas" aria-hidden="true"></canvas>
     <nav class="topbar">
       <div class="topbar_brand">
         <div class="brand">
@@ -581,15 +499,6 @@ onBeforeUnmount(() => {
   z-index: 1;
 }
 
-.background-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
 .italic {
   font-style: italic;
   font-size: 0.9rem;
@@ -892,10 +801,6 @@ onBeforeUnmount(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .background-canvas {
-    display: none;
-  }
-
   .tech-marquee__track {
     animation: none;
   }
