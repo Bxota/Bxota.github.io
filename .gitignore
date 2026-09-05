@@ -6,3 +6,4 @@ dist/
 .idea/
 *.log
 *.env.*
+/assets/cv-source/

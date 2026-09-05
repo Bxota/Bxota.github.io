@@ -7,7 +7,7 @@ type SocialLink = { label: string; href: string; icon: SocialIcon; copy?: string
 type Certification = { label: string; value: string }
 type TechLogo = { name: string; logo: string }
 type TechMarqueeTrack = { items: TechLogo[]; duration: number }
-type Employer = { name: string; url: string; logo: string; logoAlt: string; dotClass: string }
+type Employer = { name: string; url: string; logo: string; logoAlt: string; dotClass: string; logoClass?: string }
 
 const phoneNumber = '+336953122449'
 // Paris time: this must never be visible before 1 September 2026.
@@ -15,11 +15,12 @@ const ovhCloudStartDate = new Date('2026-09-01T00:00:00+02:00')
 const currentEmployer: Employer =
   new Date() >= ovhCloudStartDate
     ? {
-        name: 'Alternant chez OVHCloud',
+        name: 'Développeur logiciel',
         url: 'https://www.ovhcloud.com/fr/',
         logo: '/ovhcloud.png',
         logoAlt: 'Logo OVHcloud',
         dotClass: 'brand__dot--ovhcloud',
+        logoClass: 'brand__logo--ovhcloud',
       }
     : {
         name: 'Alternant chez Yunohit',
@@ -204,14 +205,14 @@ onBeforeUnmount(() => {
         </a>
         <a
           :href="currentEmployer.url"
-          class="brand"
+          class="brand brand--employer"
           target="_blank"
           rel="noreferrer"
         >
           <span class="brand__dot" :class="currentEmployer.dotClass" aria-hidden="true"></span>
           <span class="brand__name">{{ currentEmployer.name }}</span>
           <img
-            class="brand__logo"
+            :class="['brand__logo', currentEmployer.logoClass]"
             :src="currentEmployer.logo"
             :alt="currentEmployer.logoAlt"
             loading="lazy"
@@ -245,6 +246,9 @@ onBeforeUnmount(() => {
             href="mailto:thomas.pro.leterme@gmail.com"
             >Me contacter</a
           >
+          <a class="btn btn--secondary" href="/cv/">
+            CV interactif <span aria-hidden="true">→</span>
+          </a>
           <div class="social-buttons">
             <a
               v-for="link in socialLinks"
@@ -404,6 +408,8 @@ onBeforeUnmount(() => {
       </button>
     </section>
 
+    <footer class="legal-footer">OVHcloud est une marque d’OVH SAS.</footer>
+
     <teleport to="body">
       <div v-if="isProjectsModalOpen" class="projects-modal">
         <div class="projects-modal__backdrop" @click="closeProjectsModal"></div>
@@ -561,6 +567,19 @@ onBeforeUnmount(() => {
   border-radius: 4px;
 }
 
+.brand__logo--ovhcloud {
+  width: 120px;
+  margin-left: 0.55rem;
+  border-radius: 0;
+}
+
+.legal-footer {
+  margin-top: 2rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
@@ -647,6 +666,19 @@ onBeforeUnmount(() => {
 .btn--primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn--secondary {
+  color: #18212c;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(24, 33, 44, 0.18);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.btn--secondary:hover {
+  transform: translateY(-2px);
+  border-color: rgba(24, 33, 44, 0.35);
+  box-shadow: 0 5px 15px rgba(15, 23, 42, 0.12);
 }
 
 .social-buttons {
@@ -1208,7 +1240,24 @@ onBeforeUnmount(() => {
     gap: 0.45rem;
   }
 
+  .brand--employer {
+    width: 100%;
+  }
+
+  .brand--employer .brand__logo {
+    margin-left: auto;
+  }
+
   .brand__name {
+    font-size: 0.85rem;
+  }
+
+  .hero-card__actions {
+    gap: 0.55rem;
+  }
+
+  .hero-card__actions .btn {
+    padding: 0.7rem 0.85rem;
     font-size: 0.85rem;
   }
 
