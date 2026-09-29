@@ -1276,8 +1276,71 @@ onBeforeUnmount(() => {
   }
 
   .card__footer {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .card__footer .chips {
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .card__footer .chip {
+    min-width: 0;
+    flex: 0 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .card__footer .pill-link {
+    flex: 0 0 auto;
+  }
+
+  .projects-modal__dialog {
+    width: calc(100vw - 1.5rem);
+    max-height: calc(100dvh - 1.5rem);
+    min-width: 0;
+    padding: 1rem;
+  }
+
+  .projects-modal__list,
+  .projects-modal__list li {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .projects-modal__list .project__link {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 0.45rem;
+  }
+
+  .projects-modal__list .project__link > div {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .projects-modal__list .project__title {
+    font-size: 1rem;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .projects-modal__list .project__meta {
+    flex-wrap: wrap;
+    min-width: 0;
+    row-gap: 0.35rem;
+  }
+
+  .projects-modal__list .project__topics {
+    flex-wrap: wrap;
+    overflow-wrap: anywhere;
   }
 
   .tech-chip {
