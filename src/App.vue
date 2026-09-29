@@ -331,7 +331,11 @@ onBeforeUnmount(() => {
         </p>
         <div class="card__footer">
           <div class="chips">
-            <span v-if="repo.language" class="chip">{{ repo.language }}</span>
+            <span
+              v-for="language in repo.languages.slice(0, 4)"
+              :key="language"
+              class="chip"
+            >{{ language }}</span>
             <span v-if="repo.stars > 1" class="chip">★ {{ repo.stars }}</span>
           </div>
           <a
@@ -456,9 +460,11 @@ onBeforeUnmount(() => {
                     }}
                   </p>
                   <p class="project__meta">
-                    <span v-if="repo.language" class="project__language">{{
-                      repo.language
-                    }}</span>
+                    <span
+                      v-for="language in repo.languages"
+                      :key="language"
+                      class="project__language"
+                    >{{ language }}</span>
                     <span
                       v-if="
                         repo.topics &&
