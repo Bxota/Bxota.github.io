@@ -27,6 +27,7 @@ export type SpotlightRepo = {
   description: string | null
   stars: number
   language: string | null
+  languages: string[]
   topics: string[]
   homepage?: string | null
 }
@@ -89,6 +90,20 @@ async function fetchPaginated<T>(pathWithQuery: string): Promise<T[]> {
   return items
 }
 
+async function fetchRepoLanguages(username: string, repoName: string, primaryLanguage: string | null) {
+  try {
+    const languageBytes = await request<Record<string, number>>(
+      `/repos/${encodeURIComponent(username)}/${encodeURIComponent(repoName)}/languages`
+    )
+    const languages = Object.entries(languageBytes)
+      .sort(([, bytesA], [, bytesB]) => bytesB - bytesA)
+      .map(([language]) => language)
+    return languages.length ? languages : primaryLanguage ? [primaryLanguage] : []
+  } catch {
+    return primaryLanguage ? [primaryLanguage] : []
+  }
+}
+
 export async function fetchUser(username?: string): Promise<GitHubUser> {
   const target = resolveUsername(username)
   if (!target) throw new Error('Missing GitHub username. Set VITE_GITHUB_USERNAME or pass a username.')
@@ -129,16 +144,20 @@ export async function fetchProfileOverview({
 } = {}): Promise<ProfileOverview> {
   const [user, repos] = await Promise.all([fetchUser(username), fetchRepos(username, { topics })])
 
-  const spotlightRepos: SpotlightRepo[] = repos.slice(0, repoLimit).map((repo) => ({
-    id: repo.id,
-    name: repo.name,
-    url: repo.html_url,
-    description: repo.description,
-    stars: repo.stargazers_count,
-    language: repo.language,
-    topics: repo.topics || [],
-    homepage: repo.homepage ?? null,
-  }))
+  const visibleRepos = repos.slice(0, repoLimit)
+  const spotlightRepos: SpotlightRepo[] = await Promise.all(
+    visibleRepos.map(async (repo) => ({
+      id: repo.id,
+      name: repo.name,
+      url: repo.html_url,
+      description: repo.description,
+      stars: repo.stargazers_count,
+      language: repo.language,
+      languages: await fetchRepoLanguages(user.login, repo.name, repo.language),
+      topics: repo.topics || [],
+      homepage: repo.homepage ?? null,
+    }))
+  )
 
   return {
     username: user.login,
