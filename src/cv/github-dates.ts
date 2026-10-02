@@ -1,16 +1,22 @@
-// GitHub REST updated_at, checked on 2026-08-31. Not the last commit date.
-export const githubUpdatedAt: Record<string, string> = {
-  "Bxota.github.io": "2026-08-28T15:02:05Z",
-  "plants": "2026-06-04T17:03:50Z",
-  "env-guard": "2026-03-30T14:43:37Z",
-  "System-Monitor": "2026-01-13T09:01:25Z",
-  "terminal": "2025-10-25T09:03:36Z",
-  "mail-lab": "2025-10-25T09:02:13Z",
-  "amq-protocol": "2025-10-25T09:02:06Z",
-  "currency-converter": "2026-03-30T11:03:45Z",
-  "minecraft-mod-hardcore-server": "2025-10-25T09:01:50Z",
-  "T-DEV-700": "2026-01-09T11:36:21Z",
-  "T_NOC_701": "2026-01-07T14:38:33Z",
-  "T-HAK-700": "2025-10-25T09:04:15Z",
-  "MovieShowTracker": "2025-10-25T09:35:53Z"
+// Dernier commit de la branche principale, relevé le 2 octobre 2026.
+// Pour les projets répartis sur plusieurs dépôts, conserver le commit le plus récent.
+export const projectLastCommitAt: Record<string, string> = {
+  portfolio: '2026-09-29T18:52:37Z',
+  'cv-web': '2026-09-29T18:52:37Z',
+  plants: '2026-06-04T17:03:44Z',
+  'env-guard': '2026-03-30T14:43:24Z',
+  'system-monitor': '2026-01-13T09:01:12Z',
+  terminal: '2024-10-01T14:24:42Z',
+  'mail-lab': '2025-09-27T08:37:14Z',
+  amq: '2025-09-27T08:39:34Z',
+  currency: '2026-03-30T11:03:37Z',
+  minecraft: '2025-09-27T08:51:29Z',
+  'time-manager': '2026-01-09T09:09:39Z',
+  optimisations: '2025-12-15T18:30:19Z',
+  hackathon: '2025-10-23T07:45:21Z',
+  'tnsa-proxmox': '2026-09-14T15:51:19Z',
+  'time-bomb': '2026-09-25T16:46:48Z',
+  't-clo-901': '2026-09-25T12:36:38Z',
+  't-sec-901': '2026-09-17T15:22:02Z',
+  'movie-show-tracker': '2022-06-17T17:30:56Z',
 }

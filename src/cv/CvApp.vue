@@ -8,7 +8,7 @@ import { locale, t, type Locale } from './i18n'
 import { skillSources, sourcedSkillGroups } from './skills'
 import TravelGallery from './TravelGallery.vue'
 import { trapDialogFocus } from './dialog'
-import { certifications, education, employerGroups, experiences, independentProjects, type Experience, type IndependentProject, type Project } from './data'
+import { certifications, education, employerGroups, experiences, independentProjects, type Experience, type IndependentProject, type Project, type ProjectCategory } from './data'
 
 const mobilePreview = ref(false)
 const menuOpen = ref(false)
@@ -19,6 +19,7 @@ const selectedProject = ref<Project | null>(null)
 const selectedIndependent = ref<IndependentProject | null>(null)
 const selectedCertificate = ref<typeof certifications[number] | null>(null)
 const selectedSkill = ref('')
+const projectCategory = ref<ProjectCategory>('Personnel')
 const activeSection = ref('profil')
 const dialog = ref<HTMLDialogElement | null>(null)
 const detailBody = ref<HTMLElement | null>(null)
@@ -84,6 +85,10 @@ function navigateSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' })
   activeSection.value = id
 }
+function navigateSchoolProjects(school: string) {
+  if (school === 'Epitech' || school === 'École 89') projectCategory.value = school
+  navigateSection('projets')
+}
 function filterBySkill(skill: string) { selectedSkill.value = selectedSkill.value === skill ? '' : skill; nextTick(() => navigateSection('parcours')) }
 function relatedCount(skill: string) { return skillSources(skill).length }
 async function openEvidence(skill: string) {
@@ -143,7 +148,7 @@ onBeforeUnmount(() => { window.removeEventListener('popstate', syncRoute); obser
 
           <section id="projets" class="document-section">
             <div class="section-heading"><span>02</span><h2>{{ t("Projets personnels & scolaires") }}</h2></div>
-            <ProjectBrowser @open="openIndependent" />
+            <ProjectBrowser v-model:category="projectCategory" @open="openIndependent" />
           </section>
 
           <section id="competences" class="document-section">
@@ -156,7 +161,7 @@ onBeforeUnmount(() => { window.removeEventListener('popstate', syncRoute); obser
 
           <section id="formation" class="document-section">
             <div class="section-heading"><span>04</span><h2>{{ t("Formation") }}</h2></div>
-            <div class="education-list"><details v-for="(item, index) in education" :key="item.school" class="education-item"><summary><img :src="index === 0 ? '/img/epitech.png' : '/img/ecole89.webp'" :alt="`Logo ${item.school}`" loading="lazy" /><span><strong>{{ item.school }} <small>{{ item.years }}</small></strong><span>{{ t(item.title) }}</span><span class="education-city">{{ item.city }}</span></span><CvIcon name="plus" /></summary><div class="education-details"><p>{{ t(item.detail) }}</p><p v-if="item.note">{{ t(item.note) }}</p><button class="text-link" @click="navigateSection('projets')">{{ t("Projets d’école") }} <CvIcon name="arrow" :size="16" /></button></div></details></div>
+            <div class="education-list"><details v-for="(item, index) in education" :key="item.school" class="education-item"><summary><img :src="index === 0 ? '/img/epitech.png' : '/img/ecole89.webp'" :alt="`Logo ${item.school}`" loading="lazy" /><span><strong>{{ item.school }} <small>{{ item.years }}</small></strong><span>{{ t(item.title) }}</span><span class="education-city">{{ item.city }}</span></span><CvIcon name="plus" /></summary><div class="education-details"><p>{{ t(item.detail) }}</p><p v-if="item.note">{{ t(item.note) }}</p><button class="text-link" @click="navigateSchoolProjects(item.school)">{{ t("Projets d’école") }} <CvIcon name="arrow" :size="16" /></button></div></details></div>
             <article class="expedition"><header><img src="/img/epitech.png" alt="Epitech" loading="lazy" /><div><h3>Learning Expedition</h3><p>{{ t("Cotonou, Bénin · 8 — 14 février 2026") }}</p></div></header><p>{{ t("Échanges avec les étudiants d’Epitech, visites de l’ASIN et de Sèmè City (SCOP), rencontres chez MTN et Concentrix.") }}</p><TravelGallery /></article>
           </section>
 
@@ -179,7 +184,7 @@ onBeforeUnmount(() => { window.removeEventListener('popstate', syncRoute); obser
         <ExperiencePages v-if="selectedExperience" :experience="selectedExperience" :project="selectedProject" @project="openProject(selectedExperience!, $event)" @role="openExperience" />
         <div v-else ref="detailBody" class="detail-body"><article :key="articleKey" class="detail-article">
           <template v-if="selectedCertificate"><p class="detail-eyebrow">HackerRank</p><h2 id="detail-title" ref="detailHeading" tabindex="-1">{{ selectedCertificate.name }}<span v-if="selectedCertificate.level"> · {{ selectedCertificate.level }}</span></h2><p class="detail-subtitle">{{ t("Obtenu le") }} {{ t(selectedCertificate.date) }}</p><img class="certificate-full" :src="certificateImage(selectedCertificate.file)" :alt="t('Certificat {name} {level} de Thomas Leterme', { name: selectedCertificate.name, level: selectedCertificate.level })" /><a class="pdf-link" :href="certificatePdf(selectedCertificate.file)" target="_blank" rel="noreferrer"><CvIcon name="download" /> {{ t("Ouvrir le certificat PDF") }}</a><p class="source-note">{{ t("Identifiant :") }} {{ selectedCertificate.id }}</p></template>
-          <template v-else-if="selectedIndependent"><p class="detail-eyebrow">{{ t(selectedIndependent.context === 'École' ? 'Projet d’école' : 'Projet personnel') }}</p><h2 id="detail-title" ref="detailHeading" tabindex="-1">{{ t(selectedIndependent.title) }}</h2><p v-if="selectedIndependent.school" class="detail-subtitle">{{ selectedIndependent.school }}</p><section class="detail-section"><h3>{{ t('Description') }}</h3><p>{{ t(selectedIndependent.description) }}</p></section><section class="detail-section"><h3>{{ t('Technologies') }}</h3><div class="detail-technologies"><span v-for="tech in selectedIndependent.technologies" :key="tech">{{ t(tech) }}</span></div></section><a v-if="selectedIndependent.url" class="pdf-link" :href="selectedIndependent.url" target="_blank" rel="noreferrer"><CvIcon name="github" /> {{ t("Consulter le dépôt") }} <CvIcon name="up-right" /></a><p v-if="selectedIndependent.evidence" class="source-note detail-proof">{{ t(selectedIndependent.evidence) }} · {{ t('Vérifié le 31 août 2026.') }}<a v-if="selectedIndependent.evidenceUrl" :href="selectedIndependent.evidenceUrl" target="_blank" rel="noreferrer"> {{ t("Lire le README") }} <CvIcon name="up-right" :size="14" /></a></p></template>
+          <template v-else-if="selectedIndependent"><p class="detail-eyebrow">{{ t(selectedIndependent.context === 'École' ? 'Projet d’école' : 'Projet personnel') }}</p><h2 id="detail-title" ref="detailHeading" tabindex="-1">{{ t(selectedIndependent.title) }}</h2><span v-if="selectedIndependent.inProgress" class="project-status-badge">{{ t('En cours') }}</span><p v-if="selectedIndependent.school" class="detail-subtitle">{{ selectedIndependent.school }}</p><section class="detail-section"><h3>{{ t('Description') }}</h3><p>{{ t(selectedIndependent.description) }}</p></section><section class="detail-section"><h3>{{ t('Technologies') }}</h3><div class="detail-technologies"><span v-for="tech in selectedIndependent.technologies" :key="tech">{{ t(tech) }}</span></div></section><a v-if="selectedIndependent.url" class="pdf-link" :href="selectedIndependent.url" target="_blank" rel="noreferrer"><CvIcon name="github" /> {{ t("Consulter le dépôt") }} <CvIcon name="up-right" /></a><p v-if="selectedIndependent.evidence" class="source-note detail-proof">{{ t(selectedIndependent.evidence) }} · {{ t('Vérifié le 31 août 2026.') }}<a v-if="selectedIndependent.evidenceUrl" :href="selectedIndependent.evidenceUrl" target="_blank" rel="noreferrer"> {{ t("Lire le README") }} <CvIcon name="up-right" :size="14" /></a></p></template>
         </article></div>
       </div>
     </dialog>

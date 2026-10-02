@@ -480,15 +480,21 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .language-switch button { font-size: 12px; font-weight: 600; min-width: 37px; min-height: 36px; padding: 5px 8px; }
 .language-switch button[aria-pressed='true'] { background: #dce8f0; color: #214e6c; }
 .preview-bar > a { flex: initial; }
-.project-browser > .project-search { display: block; max-width: 640px; margin-top: 26px; }
+.project-categories { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; border-bottom: 1px solid var(--line); }
+.project-categories button { min-height: 44px; padding: 8px 16px; border: 0; border-bottom: 3px solid transparent; background: transparent; color: #536c7b; font: inherit; font-weight: 600; cursor: pointer; }
+.project-categories button[aria-pressed='true'] { border-bottom-color: var(--accent); color: var(--accent); }
+.project-categories button:hover { color: var(--accent); }
+.project-browser > .project-search { display: block; max-width: 640px; margin-top: 20px; }
 .search-field { display: flex; align-items: center; gap: 10px; padding: 0 12px; border: 1px solid #bfcfda; background: #fbfcfd; }
 .project-search input { min-width: 0; width: 100%; min-height: 46px; border: 0; background: none; font: inherit; font-size: 16px; color: var(--ink); outline-offset: 2px; }
 .project-results-count { margin-top: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--line); color: #5d7484; font-size: 14px; scroll-margin-top: 140px; outline: none; }
 .project-browser .independent-project { padding: 22px 0; align-items: center; }
-.project-title-row { display: flex; align-items: center; gap: 13px; margin-bottom: 6px; }
+.project-title-row { display: flex; align-items: center; flex-wrap: wrap; gap: 13px; margin-bottom: 6px; }
 .project-title-row > img { width: 52px; height: 28px; object-fit: contain; object-position: left center; flex-shrink: 0; }
 .project-title-row > img.ecole89-logo { width: 30px; height: 30px; }
 .project-title-row > strong { margin: 0; }
+.project-browser .project-status-badge, .detail-article .project-status-badge { display: inline-flex; align-items: center; width: fit-content; padding: 4px 9px; border: 1px solid #bdd3df; border-radius: 999px; background: #edf5f8; color: #315c74; font-size: 12px; font-weight: 600; line-height: 1.3; white-space: nowrap; }
+.detail-article .project-status-badge { margin-top: 12px; }
 .project-browser .independent-project time, .project-browser .independent-project > span > .project-updated { display: block; margin-top: 10px; font-size: 13px; color: #677e8d; }
 .project-pagination { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 24px 0; }
 .project-pagination button { min-width: 42px; min-height: 44px; font-size: 15px; }
