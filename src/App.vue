@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { awsCertification, certifications } from './cv/certifications'
+import { certificationProviders, certifications } from './cv/certifications'
 import { fetchProfileOverview, type ProfileOverview } from './services/githubApi'
 
 type SocialIcon = 'linkedin' | 'github' | 'email' | 'phone'
@@ -54,7 +54,10 @@ const iconViewBox: Record<SocialIcon, string> = {
   phone: '0 0 24 24',
 }
 
-const hackerRankCertifications = certifications.filter(cert => cert.provider === 'HackerRank')
+const certificateGroups = certificationProviders.map(provider => ({
+  ...provider,
+  certificates: certifications.filter(cert => cert.provider === provider.name),
+}))
 
 const projectColors = ['#ebe8ff', '#e5f5ff', '#ffe9d8', '#e7f5e0']
 
@@ -383,22 +386,12 @@ onBeforeUnmount(() => {
         <p v-else class="muted project__empty">Token Mapbox manquant ou invalide.</p>
       </article> -->
 
-      <article class="card cert-card">
-        <p class="card__eyebrow">Certification · {{ awsCertification.provider }}</p>
-        <a class="aws-certificate-link" :href="`/cv/?certificat=${awsCertification.id}`">
-          <img :src="`/cv/certificates/${awsCertification.file}.png`" alt="Badge AWS Academy Cloud Architecting de Thomas Leterme" width="601" height="601" loading="lazy" />
-          <h2>{{ awsCertification.name }}</h2>
-          <p class="muted">{{ awsCertification.level }} · {{ awsCertification.date }}</p>
-          <p class="muted">{{ awsCertification.detail }}</p>
-          <span>Voir le badge et le certificat →</span>
-        </a>
-      </article>
-      <article class="card cert-card">
-        <p class="card__eyebrow">Certifications · HackerRank</p>
-        <ul class="hackerrank-certificates">
-          <li v-for="cert in hackerRankCertifications" :key="cert.id">
-            <a :href="`/cv/?certificat=${cert.id}`">
-              <img :src="`/cv/certificates/${encodeURIComponent(cert.file)}.png`" :alt="`Certificat ${cert.name} ${cert.level} de Thomas Leterme`" width="1000" height="762" loading="lazy" />
+      <article v-for="group in certificateGroups" :key="group.name" class="card cert-card">
+        <p class="card__eyebrow">Certifications · {{ group.name }}</p>
+        <ul class="portfolio-certificates">
+          <li v-for="cert in group.certificates" :key="cert.id">
+            <a :href="cert.verificationUrl || `/pdf/${encodeURIComponent(cert.file)}.pdf`" target="_blank" rel="noopener noreferrer">
+              <img :src="`/cv/certificates/${encodeURIComponent(cert.file)}.png`" :alt="`Certificat ${cert.name} ${cert.level} de Thomas Leterme`" :width="cert.provider === 'AWS Academy' ? 601 : 1000" :height="cert.provider === 'AWS Academy' ? 601 : 762" loading="lazy" />
               <span><strong>{{ cert.name }}</strong><span class="muted">{{ cert.level || 'Certification professionnelle' }}</span></span>
               <span aria-hidden="true">↗</span>
             </a>
@@ -947,21 +940,16 @@ onBeforeUnmount(() => {
   color: #5c6576;
 }
 
-.aws-certificate-link { display: grid; gap: 0.8rem; color: inherit; text-decoration: none; }
-.aws-certificate-link img { width: 150px; max-width: 100%; height: auto; justify-self: center; }
-.aws-certificate-link h2 { font-size: 1.25rem; line-height: 1.4; margin: 0; }
-.aws-certificate-link p { margin: 0; }
-.aws-certificate-link > span { color: #334d80; text-decoration: underline; text-underline-offset: 3px; }
-.aws-certificate-link:focus-visible { outline: 2px solid #334d80; outline-offset: 5px; }
+.cert-card { align-self: start; }
 
-.hackerrank-certificates { display: grid; gap: 0.6rem; margin: 0; padding: 0; list-style: none; }
-.hackerrank-certificates a { display: flex; align-items: center; gap: 0.7rem; padding: 0.55rem; border: 1px solid #e1e4ec; border-radius: 12px; background: #fff; color: inherit; text-decoration: none; }
-.hackerrank-certificates a:hover { border-color: #86a7bd; }
-.hackerrank-certificates a:focus-visible { outline: 2px solid #334d80; outline-offset: 3px; }
-.hackerrank-certificates img { width: 56px; height: 43px; object-fit: contain; flex-shrink: 0; }
-.hackerrank-certificates a > span:first-of-type { flex: 1; min-width: 0; }
-.hackerrank-certificates strong { display: block; font-size: 0.95rem; }
-.hackerrank-certificates .muted { display: block; font-size: 0.8rem; margin-top: 0.2rem; }
+.portfolio-certificates { display: grid; gap: 0.6rem; margin: 0; padding: 0; list-style: none; }
+.portfolio-certificates a { display: flex; align-items: center; gap: 0.7rem; padding: 0.55rem; border: 1px solid #e1e4ec; border-radius: 12px; background: #fff; color: inherit; text-decoration: none; }
+.portfolio-certificates a:hover { border-color: #86a7bd; }
+.portfolio-certificates a:focus-visible { outline: 2px solid #334d80; outline-offset: 3px; }
+.portfolio-certificates img { width: 56px; height: 43px; object-fit: contain; flex-shrink: 0; }
+.portfolio-certificates a > span:first-of-type { flex: 1; min-width: 0; }
+.portfolio-certificates strong { display: block; font-size: 0.95rem; }
+.portfolio-certificates .muted { display: block; font-size: 0.8rem; margin-top: 0.2rem; }
 
 .list {
   display: grid;
