@@ -116,14 +116,7 @@ export const employerGroups: EmployerGroup[] = [
   { id: 'reemo', name: 'Reemo', logo: '/img/reemo.svg', location: 'Paris', period: 'Septembre 2021 — septembre 2022', roles: experiences.filter(item => item.id === 'reemo') },
 ]
 
-export const certifications = [
-  { name: 'Software Engineer', level: '', date: '22 décembre 2024', file: 'Software_Engineer_Certificate', id: 'A8D347866351' },
-  { name: 'Problem Solving', level: 'Basic', date: '22 décembre 2024', file: 'problem_solving_basic_certificate', id: 'DDDE983B4DC6' },
-  { name: 'C#', level: 'Basic', date: '21 décembre 2024', file: 'C_Sharp_Basic_Certificate', id: 'ACE146E41EC4' },
-  { name: 'Go', level: 'Basic', date: '22 décembre 2024', file: 'Golang_Basic_Certificate', id: '6B861701E751' },
-  { name: 'SQL', level: 'Intermediate', date: '21 décembre 2024', file: 'SQL Intermediate_Certificate', id: '2B657CD18A51' },
-  { name: 'SQL', level: 'Basic', date: '21 décembre 2024', file: 'SQL_Basic_Certificate', id: '2B6B1546AA6C' },
-]
+export { certifications, certificationProviders } from './certifications'
 
 export type IndependentProject = { id: string; title: string; context: 'Personnel' | 'École'; description: string; technologies: string[]; url?: string; school?: string; evidence?: string; evidenceUrl?: string }
 export const independentProjects: IndependentProject[] = [
