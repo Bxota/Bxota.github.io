@@ -22,13 +22,15 @@ Le sélecteur FR/EN traduit l'interface, les expériences, les projets, les sour
 - Catalogue de projets avec une seule recherche bilingue insensible à la casse et aux accents (nom, description, école, technologies), puis pagination par quatre. Le tri `updated_at` GitHub décroissant reste automatique et n'ajoute pas de contrôle à comprendre. Les dates ont été vérifiées le 31 août 2026 et ne se synchronisent pas automatiquement. `updated_at` est la date de mise à jour du dépôt, pas `pushed_at` ni la date du dernier commit. Le CV web non publié n'hérite pas artificiellement de la date de son dépôt : il reste identifié comme prototype local, après les projets datés. Les projets scolaires affichent discrètement le logo Epitech ou École 89 devant le titre ; les projets personnels n'ont pas de libellé répétitif.
 - Compétences associées automatiquement aux données des expériences et projets renseignés. Un clic affiche les sources et distingue pratique professionnelle, README, langage principal GitHub et déclaration dans le CV. Aucun niveau de maîtrise n'est déduit. Un filtre conserve les deux étapes de l'évolution chez Orisha.
 - Formation, Learning Expedition et galerie photo.
-- Six certificats HackerRank avec petites vignettes, agrandissement et accès aux PDF originaux.
+- Badge AWS Academy Graduate – Cloud Architecting (Training Badge), obtenu le 18 octobre 2026 après 60 heures de formation, puis six certificats HackerRank. Vignettes, agrandissement et accès aux PDF originaux ; vérification du badge AWS sur Credly.
 - Sommaire mobile repliable, sans bandeau horizontal débordant.
 - Fiches centrées, avec en-tête employeur/poste/dates et rubriques stables : vue d'ensemble, missions, projets ; contexte, résultat et technologies pour un projet professionnel. La pagination adaptative reste à l'intérieur de chaque rubrique, sans mêler des contenus de nature différente. Un paragraphe trop long est réparti intégralement sur plusieurs pages, sans réduire la police ni couper le texte. Les certificats et projets personnels gardent des fiches classiques avec sections explicites.
 
 ## Contenu et ressources
 
-Le CV français fourni est daté du 20 février 2026 et identique à `public/CV.pdf`. Thomas a actualisé son parcours en septembre 2026 : Yunohit s'est terminé le 31 août 2026 et son poste de développeur logiciel chez OVHcloud, dans l'équipe Public Cloud Integration, a commencé le 1er septembre 2026. La période freelance passée reste une expérience historique.
+Le CV français téléchargeable (`public/CV.pdf`) a été mis à jour par Thomas le 18 octobre 2026 pour inclure AWS Cloud Architecting. Thomas a actualisé son parcours en septembre 2026 : Yunohit s'est terminé le 31 août 2026 et son poste de développeur logiciel chez OVHcloud, dans l'équipe Public Cloud Integration, a commencé le 1er septembre 2026. La période freelance passée reste une expérience historique.
+
+Le badge PNG et le PDF AWS Academy ont été fournis par Thomas le 18 octobre 2026. Le PDF indique le titre « AWS Academy Graduate - Cloud Architecting - Training Badge », la date du 18 octobre 2026, 60 heures et le lien de vérification https://www.credly.com/go/aOq39UTC. Ils sont conservés dans `public/cv/certificates/` et `public/pdf/` sous le nom `AWS_Academy_Cloud_Architecting`. Les cartes AWS et HackerRank de l’accueil renvoient vers les fiches des sept certifications dans le CV interactif.
 
 Les PDF HackerRank ont été récupérés depuis le commit `1fc224efd5bdcbeb8c880e79932e1bcd84062dd9`, et leurs noms, dates et identifiants ont été vérifiés sur les pages rendues. Les aperçus PNG dans `public/cv/certificates/` sont dérivés de ces originaux, chargés à la demande du défilement. Les PDF originaux font environ 7,3 Mo chacun et ne sont chargés que lorsqu'un lien est ouvert.
 
@@ -48,7 +50,8 @@ Les fichiers publics ne contiennent ni EXIF ni coordonnées GPS. Les JPEG d'orig
 
 ## Organisation et validation
 
-- `src/cv/data.ts` : expériences, groupes d'employeurs, projets, certifications, photos.
+- `src/cv/data.ts` : expériences, groupes d'employeurs, projets, photos.
+- `src/cv/certifications.ts` : certifications et organismes, partagés entre le portfolio et le CV.
 - `src/cv/CvApp.vue` : page et navigation des fiches.
 - `src/cv/ExperienceList.vue` : employeurs et évolutions internes.
 - `src/cv/ExperiencePages.vue` et `ExperienceBlock.vue` : pagination adaptative des fiches.
