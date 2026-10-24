@@ -1,5 +1,8 @@
 // English UI and CV content. Proper names and original documents are preserved.
 export const english: Record<string, string> = {
+  "2 badges · octobre 2026": "2 badges · October 2026",
+  "24 octobre 2026": "24 October 2026",
+  "Formation de 20 heures": "20 hours of training",
   "Délégation Epitech à Cotonou": "Epitech delegation in Cotonou",
   "Visite de l’ASIN": "Visit to ASIN",
   "Conférence à Cotonou": "Conference in Cotonou",
@@ -70,6 +73,10 @@ export const english: Record<string, string> = {
   "Notions": "Basic",
   "Cotonou, Bénin · 8 — 14 février 2026": "Cotonou, Benin · 8–14 February 2026",
   "Échanges avec les étudiants d’Epitech, visites de l’ASIN et de Sèmè City (SCOP), rencontres chez MTN et Concentrix.": "Exchanges with Epitech students, visits to ASIN and Sèmè City (SCOP), and meetings at MTN and Concentrix.",
+  "1 badge · octobre 2026": "1 badge · October 2026",
+  "18 octobre 2026": "18 October 2026",
+  "Formation de 60 heures": "60-hour training course",
+  "Vérifier le badge sur Credly": "Verify badge on Credly",
   "6 certificats · décembre 2024": "6 certificates · December 2024",
   "Certification professionnelle": "Professional certification",
   "Voir le certificat {name} {level}": "View {name} {level} certificate",
