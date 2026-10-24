@@ -1,5 +1,8 @@
 // English UI and CV content. Proper names and original documents are preserved.
 export const english: Record<string, string> = {
+  "2 badges · octobre 2026": "2 badges · October 2026",
+  "24 octobre 2026": "24 October 2026",
+  "Formation de 20 heures": "20 hours of training",
   "Délégation Epitech à Cotonou": "Epitech delegation in Cotonou",
   "Visite de l’ASIN": "Visit to ASIN",
   "Conférence à Cotonou": "Conference in Cotonou",
